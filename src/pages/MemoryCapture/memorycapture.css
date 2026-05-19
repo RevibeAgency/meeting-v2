@@ -1,0 +1,49 @@
+#memory-capture{
+    width:100%;
+    height:100%;
+  }
+  
+  .capture-wrapper{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  
+  .capture-wrapper h2{
+    font-size:20px;
+  }
+  
+  .capture-textarea{
+    width:100%;
+    height:200px;
+    border:1px solid var(--border-color);
+    border-radius:10px;
+    padding:15px;
+    resize:none;
+    outline:none;
+    background:#f5f6f8;
+  }
+  
+  .capture-btn-wrap{
+    display:flex;
+    justify-content:flex-end;
+  }
+  
+  .analyze-btn{
+    background:#111;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  
+  .capture-task-section{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-top: auto;
+    height: 250px;
+  }

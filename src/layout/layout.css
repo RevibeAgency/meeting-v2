@@ -1,0 +1,15 @@
+.app-layout {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  height: 100%;
+  max-height: 650px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}

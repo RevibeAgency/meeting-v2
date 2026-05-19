@@ -1,0 +1,17 @@
+.chat-genie-page{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.wrapper-header{
+    width: 100%;
+}
