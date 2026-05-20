@@ -9,7 +9,7 @@ export default function ChatGenie() {
 
         <div className="wrapper-header">
           <span className="text-medium">
-            AI Meeting Memory
+            Cortex AI
           </span>
         </div>
 
