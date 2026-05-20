@@ -14,11 +14,11 @@ const supabase =
 const app = express();
 
 app.use(cors({
-    origin: [
-      "http://localhost:5173",
-      "https://meeting-v2-delta.vercel.app"
-    ]
-  }));
+  origin: [
+    "http://localhost:5173",
+    "https://meeting-v2-delta.vercel.app"
+  ]
+}));
 app.use(express.json());
 
 async function createEmbedding(text) {
@@ -99,9 +99,9 @@ async function searchTasks(query) {
       }
     );
 
-    return data?.filter(
-      task => task.similarity > 0.65
-    );
+  return data?.filter(
+    task => task.similarity > 0.65
+  );
 
 }
 
@@ -144,37 +144,21 @@ app.post("/chat", async (req, res) => {
 
     const { message } = req.body;
 
-    const lower =
-      message.toLowerCase();
-    
-    let filteredTasks = [];
+    const relevantTasks =
+      await searchTasks(message);
 
-    if (
-      lower.includes("overdue")
-    ) {
-    
-      const { data } =
-        await supabase
-          .from("tasks")
-          .select("*")
-          .or(
-            "deadline.ilike.%yesterday%,deadline.ilike.%overdue%"
-          );
-    
-      filteredTasks =
-        data || [];
-    
-    }
-    
-    else {
-    
-      const relevantTasks =
-        await searchTasks(message);
-    
-      filteredTasks =
-        relevantTasks || [];
-    
-    }
+    const filteredTasks =
+      relevantTasks || [];
+
+    // FETCH ALL TASKS
+
+    const { data: allTasks } =
+      await supabase
+        .from("tasks")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
 
     let assistantNote = "";
 
@@ -257,11 +241,30 @@ ${meeting.notes}
     conversationHistory.push({
       role: "user",
       content: `
+You are Cortex AI.
+
+Decide naturally whether the user:
+- wants all tasks
+- wants specific tasks
+- wants summaries
+- wants explanations
+- wants deadlines
+- wants meeting insights
+
+If the user asks broadly about tasks,
+consider ALL stored tasks.
+
+If the user asks specifically,
+prioritize semantic matches.
+
 Stored Meetings:
 ${meetingContext || "No meetings"}
 
-Stored Tasks:
+Relevant Retrieved Tasks:
 ${taskContext || "No tasks"}
+
+All Tasks Database:
+${JSON.stringify(allTasks || [])}
 
 Relevant Memories:
 ${memoryContext || "No memories"}
@@ -323,25 +326,27 @@ ${message}
 
     }
 
-    const hasStrongMatch =
-  filteredTasks.length > 0;
+    const shouldShowTasks =
+      (
+        message.toLowerCase().includes("task") ||
+        message.toLowerCase().includes("deadline") ||
+        message.toLowerCase().includes("work") ||
+        message.toLowerCase().includes("assigned") ||
+        message.toLowerCase().includes("todo")
+      );
 
-  res.json({
-    reply:
-      assistantNote + "\n\n" + reply,
-  
+    res.json({
+      reply:
+        assistantNote + "\n\n" + reply,
+
       tasks:
-      filteredTasks.map(task => ({
-        title: task.title,
-        description: task.description,
-        deadline: task.deadline,
-        topic: task.topic,
-        tag: task.tag,
-        status: task.status
-      })),
-  
-    hasStrongMatch
-  });
+        shouldShowTasks
+          ? allTasks || []
+          : [],
+
+      hasStrongMatch:
+        filteredTasks.length > 0
+    });
 
   } catch (error) {
 
@@ -699,9 +704,9 @@ When answering:
     const embedding =
       await createEmbedding(notes);
 
-      console.log("MEMORY INSERT STARTED");
+    console.log("MEMORY INSERT STARTED");
 
-      const { error: memoryError } =
+    const { error: memoryError } =
       await supabase
         .from("memories")
         .insert([
@@ -710,12 +715,12 @@ When answering:
             embedding
           }
         ]);
-    
+
     if (memoryError) {
       console.log(
         "MEMORY INSERT ERROR:"
       );
-    
+
       console.log(memoryError);
     }
 

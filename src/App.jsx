@@ -12,15 +12,44 @@ import PitchDecks from "./pages/PitchDecks/PitchDecks";
 import "./layout/layout.css";
 
 function App() {
-
   const [activePage, setActivePage] = useState("chat");
 
+  // =========================
+  // GLOBAL STATES
+  // =========================
+
+  const [chatMessages, setChatMessages] = useState([]);
+
+  const [meetingData, setMeetingData] = useState(null);
+
+  const [storedTasks, setStoredTasks] = useState([]);
+
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem("cortex_messages");
+
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "cortex_messages",
+      JSON.stringify(messages)
+    );
+  
+  }, [messages]);
+
   const renderPage = () => {
-
     switch (activePage) {
-
       case "memory":
-        return <MemoryCapture />;
+        return (
+          <MemoryCapture
+            meetingData={meetingData}
+            setMeetingData={setMeetingData}
+            storedTasks={storedTasks}
+            setStoredTasks={setStoredTasks}
+          />
+        );
 
       case "meeting":
         return <MeetingHub />;
@@ -29,21 +58,25 @@ function App() {
         return <ActionTracker />;
 
       case "tasks":
-        return <AllTasks />;
+        return <AllTasks storedTasks={storedTasks} />;
 
       case "deck":
         return <PitchDecks />;
 
       default:
-        return <ChatGenie />;
+        return (
+          <ChatGenie
+            chatMessages={chatMessages}
+            setChatMessages={setChatMessages}
+            storedTasks={storedTasks}
+            setStoredTasks={setStoredTasks}
+          />
+        );
     }
   };
 
   return (
-    <MainLayout
-      activePage={activePage}
-      setActivePage={setActivePage}
-    >
+    <MainLayout activePage={activePage} setActivePage={setActivePage}>
       {renderPage()}
     </MainLayout>
   );

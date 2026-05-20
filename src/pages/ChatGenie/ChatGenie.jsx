@@ -1,7 +1,12 @@
 import ChatBox from "../../components/Chat/ChatBox";
 import "./chatgenie.css";
 
-export default function ChatGenie() {
+function ChatGenie({
+  chatMessages,
+  setChatMessages,
+  storedTasks,
+  setStoredTasks
+}) {
   return (
     <div className="chat-genie-page">
 

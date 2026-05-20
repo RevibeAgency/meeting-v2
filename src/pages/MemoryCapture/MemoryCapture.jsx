@@ -5,7 +5,12 @@ import "./memorycapture.css";
 import TaskGrid from "../../components/TaskCard/TaskGrid";
 import API_URL from "../../lib/api";
 
-export default function MemoryCapture() {
+function MemoryCapture({
+  meetingData,
+  setMeetingData,
+  storedTasks,
+  setStoredTasks
+}) {
 
   const [note, setNote] = useState("");
 
