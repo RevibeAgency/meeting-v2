@@ -6,54 +6,46 @@ import API_URL from "../../lib/api";
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
 
   const handleSendMessage = async (text) => {
-
     if (!text.trim()) return;
-  
+
     const userMessage = {
       type: "user",
       text,
     };
-  
-    setMessages((prev) => [
-      ...prev,
-      userMessage,
-    ]);
-  
+
+    setMessages((prev) => [...prev, userMessage]);
+
+    setIsTyping(true);
+
     try {
-  
-      const response = await fetch(
-        `${API_URL}/chat`,
-        {
-          method: "POST",
-  
-          headers: {
-            "Content-Type": "application/json",
-          },
-  
-          body: JSON.stringify({
-            message: text,
-          }),
-        }
-      );
-  
+      const response = await fetch(`${API_URL}/chat`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          message: text,
+        }),
+      });
+
       const data = await response.json();
-  
+
       const aiMessage = {
-        type: "ai",
+        type: data.tasks?.length ? "tasks" : "ai",
         text: data.reply,
+        tasks: data.tasks || [],
       };
-  
-      setMessages((prev) => [
-        ...prev,
-        aiMessage,
-      ]);
-  
+
+      setMessages((prev) => [...prev, aiMessage]);
+      setIsTyping(false);
     } catch (error) {
-  
       console.log(error);
-  
+      setIsTyping(false);
     }
   };
   return (
@@ -134,8 +126,20 @@ export default function ChatBox() {
       <div className="chat-board">
         <div className="chat-messages">
           {messages.map((message, index) => (
-            <ChatMessage key={index} type={message.type} text={message.text} />
+            <ChatMessage
+              key={index}
+              type={message.type}
+              text={message.text}
+              tasks={message.tasks}
+            />
           ))}
+          {isTyping && (
+            <div className="typing-loader">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          )}
         </div>
 
         <ChatInput onSend={handleSendMessage} />
