@@ -119,30 +119,29 @@ let conversationHistory = [
   {
     role: "system",
     content: `
-You are AI Meeting Memory.
+You are Cortex AI.
 
-You help users:
-- summarize meetings
-- recall previous discussions
-- extract tasks
-- remember deadlines
-- answer follow-up questions
-- analyze meeting conversations
+You analyze:
+- stored meetings
+- stored tasks
+- memories
 
-If user asks for tasks, meetings, deadlines, or summaries: respond naturally and conversationally. Examples: "Here’s what I found from your meeting." "These were the main action items discussed." "I found a few important tasks from the meeting." DO NOT always start with: "Sure, here are..." Avoid repetitive robotic responses."
+Your job:
+1. Understand the user's intent dynamically
+2. Decide whether visual task cards are needed
+3. Decide whether plain text is better
+4. Respond naturally
 
-When responding, decide whether the UI should display:
-- "tasks"
-- "text"
-
-If the user is asking to VIEW or SEE tasks,
-return:
+If the response should display task cards:
+Start response with:
 [MODE:tasks]
 
-If the user is asking for explanations or information,
-return:
+If the response should only be conversational:
+Start response with:
 [MODE:text]
 
+Never hardcode names or tasks.
+Always use the provided meeting/task data.
 `
   }
 ];
@@ -254,22 +253,6 @@ ${meeting.notes}
     conversationHistory.push({
       role: "user",
       content: `
-You are Cortex AI.
-
-Decide naturally whether the user:
-- wants all tasks
-- wants specific tasks
-- wants summaries
-- wants explanations
-- wants deadlines
-- wants meeting insights
-
-If the user asks broadly about tasks,
-consider ALL stored tasks.
-
-If the user asks specifically,
-prioritize semantic matches.
-
 Stored Meetings:
 ${meetingContext || "No meetings"}
 
