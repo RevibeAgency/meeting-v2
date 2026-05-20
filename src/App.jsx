@@ -18,8 +18,16 @@ function App() {
   // GLOBAL STATES
   // =========================
 
-  const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState(() => {
 
+    const saved =
+      localStorage.getItem("cortex_messages");
+  
+    return saved
+      ? JSON.parse(saved)
+      : [];
+  
+  });
   const [meetingData, setMeetingData] = useState(null);
 
   const [storedTasks, setStoredTasks] = useState([]);

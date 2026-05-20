@@ -20,7 +20,10 @@ export default function ChatBox({
       text,
     };
 
-    chatMessages((prev) => [...prev, userMessage]);
+    setChatMessages((prev) => [
+      ...prev,
+      userMessage
+    ]);
 
     setIsTyping(true);
 
@@ -45,7 +48,10 @@ export default function ChatBox({
         tasks: data.tasks || [],
       };
 
-      chatMessages((prev) => [...prev, aiMessage]);
+      setChatMessages((prev) => [
+        ...prev,
+        aiMessage
+      ]);
       setIsTyping(false);
     } catch (error) {
       console.log(error);

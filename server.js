@@ -93,7 +93,7 @@ async function searchTasks(query) {
         query_embedding:
           queryEmbedding,
 
-        match_threshold: 0.60,
+        match_threshold: 0.72,
 
         match_count: 10
       }
