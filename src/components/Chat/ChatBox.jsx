@@ -2,19 +2,59 @@ import { useState } from "react";
 import "./chat.css";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
+import API_URL from "../../lib/api";
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);
 
-  const handleSendMessage = (text) => {
-    if (!text.trim()) return;
+  const handleSendMessage = async (text) => {
 
-    const newMessage = {
+    if (!text.trim()) return;
+  
+    const userMessage = {
       type: "user",
       text,
     };
-
-    setMessages((prev) => [...prev, newMessage]);
+  
+    setMessages((prev) => [
+      ...prev,
+      userMessage,
+    ]);
+  
+    try {
+  
+      const response = await fetch(
+        `${API_URL}/chat`,
+        {
+          method: "POST",
+  
+          headers: {
+            "Content-Type": "application/json",
+          },
+  
+          body: JSON.stringify({
+            message: text,
+          }),
+        }
+      );
+  
+      const data = await response.json();
+  
+      const aiMessage = {
+        type: "ai",
+        text: data.reply,
+      };
+  
+      setMessages((prev) => [
+        ...prev,
+        aiMessage,
+      ]);
+  
+    } catch (error) {
+  
+      console.log(error);
+  
+    }
   };
   return (
     <div className="ai-chatbox">

@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./memorycapture.css";
 
 import TaskGrid from "../../components/TaskCard/TaskGrid";
+import API_URL from "../../lib/api";
 
 export default function MemoryCapture() {
 
@@ -17,7 +18,7 @@ export default function MemoryCapture() {
     try {
   
       const response = await fetch(
-        "http://localhost:3000/analyze",
+        `${API_URL}/analyze`,
         {
           method: "POST",
   
