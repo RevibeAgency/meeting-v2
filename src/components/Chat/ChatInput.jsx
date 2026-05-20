@@ -6,6 +6,7 @@ export default function ChatInput({ onSend }) {
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
   const handleInput = (e) => {
+    if (!text.trim()) return;
     setText(e.target.value);
 
     e.target.style.height = "24px";
