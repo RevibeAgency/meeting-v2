@@ -16,7 +16,7 @@ const app = express();
 app.use(cors({
     origin: [
       "http://localhost:5173",
-      "https://meeting-v2-seven.vercel.app"
+      "https://meeting-v2-delta.vercel.app/"
     ]
   }));
 app.use(express.json());
