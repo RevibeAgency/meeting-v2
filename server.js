@@ -130,6 +130,19 @@ You help users:
 - analyze meeting conversations
 
 If user asks for tasks, meetings, deadlines, or summaries: respond naturally and conversationally. Examples: "Here’s what I found from your meeting." "These were the main action items discussed." "I found a few important tasks from the meeting." DO NOT always start with: "Sure, here are..." Avoid repetitive robotic responses."
+
+When responding, decide whether the UI should display:
+- "tasks"
+- "text"
+
+If the user is asking to VIEW or SEE tasks,
+return:
+[MODE:tasks]
+
+If the user is asking for explanations or information,
+return:
+[MODE:text]
+
 `
   }
 ];
@@ -274,9 +287,6 @@ ${message}
 `
     });
 
-
-
-
     const response = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
@@ -305,11 +315,29 @@ ${message}
 
     const data = await response.json();
 
+    console.log("GROQ CHAT RAW:", data);
+
     console.log("CHAT RESPONSE:", data);
 
+    if (!data?.choices?.[0]?.message?.content) {
+
+      console.log("INVALID GROQ RESPONSE:");
+      console.log(data);
+    
+    }
+    
     const reply =
       data?.choices?.[0]?.message?.content ||
-      "No AI response received";
+      "I couldn't generate a proper response.";
+
+      const shouldShowTasks =
+  reply.includes("[MODE:tasks]");
+
+  const cleanReply =
+  reply
+    .replace("[MODE:tasks]", "")
+    .replace("[MODE:text]", "")
+    .trim();
 
     conversationHistory.push({
       role: "assistant",
@@ -326,18 +354,8 @@ ${message}
 
     }
 
-    const shouldShowTasks =
-      (
-        message.toLowerCase().includes("task") ||
-        message.toLowerCase().includes("deadline") ||
-        message.toLowerCase().includes("work") ||
-        message.toLowerCase().includes("assigned") ||
-        message.toLowerCase().includes("todo")
-      );
-
     res.json({
-      reply:
-        assistantNote + "\n\n" + reply,
+      reply: cleanReply,
 
       tasks:
         shouldShowTasks
