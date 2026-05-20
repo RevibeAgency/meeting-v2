@@ -1,4 +1,5 @@
 import "./chat.css";
+import TaskGrid from "../TaskCard/TaskGrid";
 
 export default function ChatMessage({ type, text, tasks }) {
   return (
