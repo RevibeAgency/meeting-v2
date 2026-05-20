@@ -18,28 +18,11 @@ function App() {
   // GLOBAL STATES
   // =========================
 
-  const [chatMessages, setChatMessages] = useState(() => {
-
-    const saved =
-      localStorage.getItem("cortex_messages");
-  
-    return saved
-      ? JSON.parse(saved)
-      : [];
-  
-  });
+  const [chatMessages, setChatMessages] = useState([]);
   const [meetingData, setMeetingData] = useState(null);
 
   const [storedTasks, setStoredTasks] = useState([]);
 
-  useEffect(() => {
-
-    localStorage.setItem(
-      "cortex_messages",
-      JSON.stringify(chatMessages)
-    );
-  
-  }, [chatMessages]);
 
   const renderPage = () => {
     switch (activePage) {

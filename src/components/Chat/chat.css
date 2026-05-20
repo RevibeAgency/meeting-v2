@@ -65,6 +65,7 @@
   width: 100%;
   display: flex;
   flex-shrink: 0;
+  gap: 20px;
 }
 
 .chat-row.user {
