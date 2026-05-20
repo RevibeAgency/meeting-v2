@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import MainLayout from "./layout/MainLayout";
 
@@ -24,20 +24,14 @@ function App() {
 
   const [storedTasks, setStoredTasks] = useState([]);
 
-  const [messages, setMessages] = useState(() => {
-    const saved = localStorage.getItem("cortex_messages");
-
-    return saved ? JSON.parse(saved) : [];
-  });
-
   useEffect(() => {
 
     localStorage.setItem(
       "cortex_messages",
-      JSON.stringify(messages)
+      JSON.stringify(chatMessages)
     );
   
-  }, [messages]);
+  }, [chatMessages]);
 
   const renderPage = () => {
     switch (activePage) {

@@ -5,23 +5,24 @@ function ChatGenie({
   chatMessages,
   setChatMessages,
   storedTasks,
-  setStoredTasks
+  setStoredTasks,
 }) {
   return (
     <div className="chat-genie-page">
-
       <div className="wrapper">
-
         <div className="wrapper-header">
-          <span className="text-medium">
-            Cortex AI
-          </span>
+          <span className="text-medium">Cortex AI</span>
         </div>
 
-        <ChatBox />
-
+        <ChatBox
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
+          storedTasks={storedTasks}
+          setStoredTasks={setStoredTasks}
+        />
       </div>
-
     </div>
   );
 }
+
+export default ChatGenie;

@@ -4,8 +4,12 @@ import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import API_URL from "../../lib/api";
 
-export default function ChatBox() {
-  const [messages, setMessages] = useState([]);
+export default function ChatBox({
+  chatMessages,
+  setChatMessages,
+  storedTasks,
+  setStoredTasks
+}) {
   const [isTyping, setIsTyping] = useState(false);
 
   const handleSendMessage = async (text) => {
@@ -16,7 +20,7 @@ export default function ChatBox() {
       text,
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    chatMessages((prev) => [...prev, userMessage]);
 
     setIsTyping(true);
 
@@ -41,7 +45,7 @@ export default function ChatBox() {
         tasks: data.tasks || [],
       };
 
-      setMessages((prev) => [...prev, aiMessage]);
+      chatMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
     } catch (error) {
       console.log(error);
@@ -125,7 +129,7 @@ export default function ChatBox() {
 
       <div className="chat-board">
         <div className="chat-messages">
-          {messages.map((message, index) => (
+          {chatMessages.map((message, index) => (
             <ChatMessage
               key={index}
               type={message.type}

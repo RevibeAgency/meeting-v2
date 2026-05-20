@@ -14,7 +14,6 @@ function MemoryCapture({
 
   const [note, setNote] = useState("");
 
-  const [tasks, setTasks] = useState([]);
 
   const handleAnalyze = async () => {
 
@@ -41,7 +40,8 @@ function MemoryCapture({
   
       console.log(data);
   
-      setTasks(data.tasks || []);
+      setStoredTasks(data.tasks || []);
+setMeetingData(data);
   
     } catch (error) {
   
@@ -85,7 +85,7 @@ function MemoryCapture({
 
         <div className="capture-task-section">
 
-          <TaskGrid tasks={tasks} />
+        <TaskGrid tasks={storedTasks} />
 
         </div>
 
@@ -94,3 +94,5 @@ function MemoryCapture({
     </section>
   );
 }
+
+export default MemoryCapture;
