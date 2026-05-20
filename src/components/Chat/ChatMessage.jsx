@@ -15,7 +15,7 @@ export default function ChatMessage({ type, text, tasks }) {
                 tag: task.tag,
                 dueDate: task.deadline,
                 description: task.description,
-                createdDate: "Today",
+                createdDate: new Date(task.created_at).toLocaleDateString(),
               }))}
             />
           </>
