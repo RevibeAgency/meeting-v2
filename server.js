@@ -568,7 +568,7 @@ When answering:
             query_embedding:
               newEmbedding,
 
-            match_threshold: 0.72,
+            match_threshold: 0.90,
 
             match_count: 1
           }
