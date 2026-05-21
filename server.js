@@ -119,19 +119,17 @@ let conversationHistory = [
   {
     role: "system",
     content: `
-When responding, ALWAYS return JSON in this format:
+You are AI Meeting Memory.
 
-{
-  "mode": "tasks" or "text",
-  "response": "...",
-  "taskScope": "all" or "relevant"
-}
+You help users:
+- summarize meetings
+- recall previous discussions
+- extract tasks
+- remember deadlines
+- answer follow-up questions
+- analyze meeting conversations
 
-Rules:
-- If user wants to SEE tasks, mode = "tasks"
-- If user wants explanation/info, mode = "text"
-- If user wants all tasks, taskScope = "all"
-- If user wants specific task info, taskScope = "relevant"
+If user asks for tasks, meetings, deadlines, or summaries: respond naturally and conversationally. Examples: "Here’s what I found from your meeting." "These were the main action items discussed." "I found a few important tasks from the meeting." DO NOT always start with: "Sure, here are..." Avoid repetitive robotic responses."
 `
   }
 ];
@@ -332,22 +330,31 @@ ${message}
 
     }
 
-    const shouldShowTasks =
-      (
-        message.toLowerCase().includes("task") ||
-        message.toLowerCase().includes("deadline") ||
-        message.toLowerCase().includes("work") ||
-        message.toLowerCase().includes("assigned") ||
-        message.toLowerCase().includes("todo")
-      );
+    const lowerReply = reply.toLowerCase();
+
+    const aiWantsTasks =
+      lowerReply.includes("task") ||
+      lowerReply.includes("assigned") ||
+      lowerReply.includes("deadline") ||
+      lowerReply.includes("working on") ||
+      lowerReply.includes("action item");
+
+    const wantsAllTasks =
+      lowerReply.includes("all tasks") ||
+      lowerReply.includes("all the tasks") ||
+      lowerReply.includes("every task");
 
     res.json({
       reply:
         assistantNote + "\n\n" + reply,
 
-        tasks:
-        filteredTasks?.length
-          ? filteredTasks
+      tasks:
+        aiWantsTasks
+          ? (
+            wantsAllTasks
+              ? allTasks
+              : filteredTasks
+          )
           : [],
 
       hasStrongMatch:
