@@ -270,18 +270,12 @@ ${message}
 `
     });
 
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
+    const groqResponse =
+      await axios.post(
 
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-            `Bearer ${process.env.GROQ_API_KEY}`
-        },
+        "https://api.groq.com/openai/v1/chat/completions",
 
-        body: JSON.stringify({
+        {
 
           model: "llama-3.3-70b-versatile",
 
@@ -291,12 +285,26 @@ ${message}
 
           max_tokens: 1024
 
-        })
+        },
 
-      }
-    );
+        {
 
-    const data = await response.json();
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              `Bearer ${process.env.GROQ_API_KEY}`
+
+          }
+
+        }
+
+      );
+
+    const data =
+      groqResponse.data;
 
     console.log("GROQ CHAT RAW:", data);
 
@@ -324,17 +332,23 @@ ${message}
     res.json({
       reply:
         assistantNote + "\n\n" + reply,
-    
+
       tasks:
         filteredTasks || [],
-    
+
       hasStrongMatch:
         filteredTasks.length > 0
     });
 
   } catch (error) {
 
-    console.log("CHAT ERROR:", error);
+    console.log("CHAT ERROR:");
+
+    console.log(error.response?.data);
+
+    console.log(error.message);
+
+    console.log(error);
 
     res.status(500).json({
       error: "Server Error"
@@ -354,18 +368,12 @@ app.post("/analyze", async (req, res) => {
 
     const { notes } = req.body;
 
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
+    const groqResponse =
+      await axios.post(
 
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-            `Bearer ${process.env.GROQ_API_KEY}`
-        },
+        "https://api.groq.com/openai/v1/chat/completions",
 
-        body: JSON.stringify({
+        {
 
           model: "llama-3.3-70b-versatile",
 
@@ -381,9 +389,7 @@ Format:
 
 {
   "summary":"...",
-  "topics":[
-    "..."
-  ],
+  "topics":["..."],
   "tasks":[
     {
       "title":"...",
@@ -394,14 +400,6 @@ Format:
     }
   ]
 }
-
-When answering:
-- prioritize semantic memory retrieval
-- use stored tasks if relevant
-- use meeting history naturally
-- do not hallucinate missing tasks
-- if relevant tasks exist, reference them conversationally
-- tasks may be reopened, updated, or versioned
 `
             },
 
@@ -415,12 +413,26 @@ When answering:
 
           max_tokens: 1500
 
-        })
+        },
 
-      }
-    );
+        {
 
-    const data = await response.json();
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              `Bearer ${process.env.GROQ_API_KEY}`
+
+          }
+
+        }
+
+      );
+
+    const data =
+      groqResponse.data;
 
     console.log("ANALYZE RESPONSE:", data);
 
@@ -732,6 +744,10 @@ When answering:
 
 
     console.log("ANALYZE ERROR:");
+    console.log(error.response?.data);
+
+    console.log(error.message);
+
     console.log(error);
 
     res.status(500).json({
