@@ -83,6 +83,29 @@ async function searchMemories(query) {
 
 async function searchTasks(query) {
 
+  const lower =
+    query.toLowerCase();
+
+  // SHOW ALL TASKS
+  if (
+    lower.includes("all tasks") ||
+    lower.includes("show all tasks") ||
+    lower.includes("show me all tasks") ||
+    lower.includes("list all tasks")
+  ) {
+
+    const { data } =
+      await supabase
+        .from("tasks")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
+
+    return data || [];
+  }
+
+  // SEMANTIC SEARCH
   const queryEmbedding =
     await createEmbedding(query);
 
@@ -151,14 +174,6 @@ app.post("/chat", async (req, res) => {
       relevantTasks || [];
 
     // FETCH ALL TASKS
-
-    const { data: allTasks } =
-      await supabase
-        .from("tasks")
-        .select("*")
-        .order("created_at", {
-          ascending: false
-        });
 
     let assistantNote = "";
 
@@ -241,35 +256,11 @@ ${meeting.notes}
     conversationHistory.push({
       role: "user",
       content: `
-You are Cortex AI.
-
-Decide naturally whether the user:
-- wants all tasks
-- wants specific tasks
-- wants summaries
-- wants explanations
-- wants deadlines
-- wants meeting insights
-
-If the user asks broadly about tasks,
-consider ALL stored tasks.
-
-If the user asks specifically,
-prioritize semantic matches.
-
 Stored Meetings:
 ${meetingContext || "No meetings"}
 
 Relevant Retrieved Tasks:
 ${taskContext || "No tasks"}
-
-All Tasks:
-${allTasks?.map(task => `
-Title: ${task.title}
-Description: ${task.description}
-Deadline: ${task.deadline}
-Status: ${task.status}
-`).join("\n")}
 
 Relevant Memories:
 ${memoryContext || "No memories"}
@@ -330,33 +321,13 @@ ${message}
 
     }
 
-    const lowerReply = reply.toLowerCase();
-
-    const aiWantsTasks =
-      lowerReply.includes("task") ||
-      lowerReply.includes("assigned") ||
-      lowerReply.includes("deadline") ||
-      lowerReply.includes("working on") ||
-      lowerReply.includes("action item");
-
-    const wantsAllTasks =
-      lowerReply.includes("all tasks") ||
-      lowerReply.includes("all the tasks") ||
-      lowerReply.includes("every task");
-
     res.json({
       reply:
         assistantNote + "\n\n" + reply,
-
+    
       tasks:
-        aiWantsTasks
-          ? (
-            wantsAllTasks
-              ? allTasks
-              : filteredTasks
-          )
-          : [],
-
+        filteredTasks || [],
+    
       hasStrongMatch:
         filteredTasks.length > 0
     });
