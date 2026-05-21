@@ -95,7 +95,7 @@ async function searchTasks(query) {
 
         match_threshold: 0.72,
 
-        match_count: 10
+        match_count: 4
       }
     );
 
@@ -128,18 +128,6 @@ You help users:
 - remember deadlines
 - answer follow-up questions
 - analyze meeting conversations
-
-When responding, decide whether the UI should display:
-- "tasks"
-- "text"
-
-If the user is asking to VIEW or SEE tasks,
-return:
-[MODE:tasks]
-
-If the user is asking for explanations or information,
-return:
-[MODE:text]
 
 If user asks for tasks, meetings, deadlines, or summaries: respond naturally and conversationally. Examples: "Here’s what I found from your meeting." "These were the main action items discussed." "I found a few important tasks from the meeting." DO NOT always start with: "Sure, here are..." Avoid repetitive robotic responses."
 `
@@ -193,7 +181,7 @@ app.post("/chat", async (req, res) => {
         .order("created_at", {
           ascending: false
         })
-        .limit(10);
+        .limit(3);
 
     const meetingContext =
       storedMeetings
@@ -275,8 +263,13 @@ ${meetingContext || "No meetings"}
 Relevant Retrieved Tasks:
 ${taskContext || "No tasks"}
 
-All Tasks Database:
-${JSON.stringify(allTasks || [])}
+All Tasks:
+${allTasks?.map(task => `
+Title: ${task.title}
+Description: ${task.description}
+Deadline: ${task.deadline}
+Status: ${task.status}
+`).join("\n")}
 
 Relevant Memories:
 ${memoryContext || "No memories"}
@@ -318,18 +311,10 @@ ${message}
 
     console.log("CHAT RESPONSE:", data);
 
-    if (!data?.choices?.[0]?.message?.content) {
-
-      console.log("INVALID GROQ RESPONSE:");
-      console.log(data);
-    
-    }
-    
     const reply =
       data?.choices?.[0]?.message?.content ||
-      "I couldn't generate a proper response.";
+      "No AI response received";
 
-      
     conversationHistory.push({
       role: "assistant",
       content: reply
@@ -346,21 +331,21 @@ ${message}
     }
 
     const shouldShowTasks =
-  reply.includes("[MODE:tasks]");
-
-  const cleanReply =
-  reply
-    .replace("[MODE:tasks]", "")
-    .replace("[MODE:text]", "")
-    .trim();
+      (
+        message.toLowerCase().includes("task") ||
+        message.toLowerCase().includes("deadline") ||
+        message.toLowerCase().includes("work") ||
+        message.toLowerCase().includes("assigned") ||
+        message.toLowerCase().includes("todo")
+      );
 
     res.json({
       reply:
-  assistantNote + "\n\n" + cleanReply,
+        assistantNote + "\n\n" + reply,
 
-      tasks:
-        shouldShowTasks
-          ? allTasks || []
+        tasks:
+        filteredTasks?.length
+          ? filteredTasks
           : [],
 
       hasStrongMatch:
