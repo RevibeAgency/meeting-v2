@@ -13,12 +13,7 @@ const supabase =
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://meeting-v2-delta.vercel.app"
-  ]
-}));
+app.use(cors());
 app.use(express.json());
 
 async function createEmbedding(text) {
@@ -351,7 +346,13 @@ ${message}
     console.log(error);
 
     res.status(500).json({
-      error: "Server Error"
+
+      error:
+        error.message,
+    
+      full:
+        JSON.stringify(error, null, 2)
+    
     });
 
   }
@@ -753,11 +754,11 @@ Format:
     res.status(500).json({
 
       error:
-        error.message || "Failed to analyze meeting",
-
+        error.message,
+    
       full:
         JSON.stringify(error, null, 2)
-
+    
     });
 
 
