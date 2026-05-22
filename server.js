@@ -111,14 +111,14 @@ async function searchTasks(query) {
         query_embedding:
           queryEmbedding,
 
-        match_threshold: 0.78,
+        match_threshold: 0.65,
 
         match_count: 10
       }
     );
 
   return data?.filter(
-    task => task.similarity > 0.72
+    task => task.similarity > 0.65
   );
 
 }
