@@ -327,10 +327,15 @@ ${message}
     res.json({
       reply:
         assistantNote + "\n\n" + reply,
-
+    
       tasks:
-        filteredTasks || [],
-
+        (filteredTasks || []).map(task => ({
+          ...task,
+    
+          dueDate:
+            task.deadline || "Not mentioned"
+        })),
+    
       hasStrongMatch:
         filteredTasks.length > 0
     });
@@ -539,12 +544,10 @@ Format:
         description:
           task.description,
 
-        search_text: `
+          search_text: `
           ${task.title}
           ${task.topic}
-          ${task.description}
-          ${task.tag}
-          `.toLowerCase().trim(),
+        `.toLowerCase().trim(),
         status:
           "pending",
 
@@ -570,7 +573,7 @@ Format:
             query_embedding:
               newEmbedding,
 
-            match_threshold: 0.90,
+            match_threshold: 0.95,
 
             match_count: 1
           }
