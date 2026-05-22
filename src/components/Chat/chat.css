@@ -81,6 +81,9 @@
   background-color: #fff;
   color: #111;
   padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .message.ai,
