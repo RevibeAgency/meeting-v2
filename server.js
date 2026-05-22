@@ -118,7 +118,7 @@ async function searchTasks(query) {
     );
 
   return data?.filter(
-    task => task.similarity > 0.78
+    task => task.similarity > 0.72
   );
 
 }
