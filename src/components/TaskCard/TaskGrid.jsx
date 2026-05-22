@@ -27,11 +27,16 @@ export default function TaskGrid({ tasks = [] }) {
                   .toLocaleDateString("en-GB")
           }
           dueDate={
-            task.deadline &&
-            task.deadline.trim() !== "" &&
-            task.deadline !== "null" &&
-            task.deadline !== "undefined"
+            task.dueDate
+              ? task.dueDate
+          
+              : task.deadline &&
+                task.deadline.trim() !== "" &&
+                task.deadline !== "null" &&
+                task.deadline !== "undefined"
+          
               ? task.deadline
+          
               : "Not mentioned"
           }
           description={task.description}
