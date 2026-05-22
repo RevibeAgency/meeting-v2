@@ -16,11 +16,19 @@ export default function TaskGrid({ tasks = [] }) {
           tag={task.tag}
           createdDate={
             task.created_at
-              ? new Date(task.created_at).toLocaleDateString("en-GB")
-              : "Not available"
+              ? new Date(task.created_at)
+                  .toLocaleDateString("en-GB")
+          
+              : task.createdAt
+              ? new Date(task.createdAt)
+                  .toLocaleDateString("en-GB")
+          
+              : new Date()
+                  .toLocaleDateString("en-GB")
           }
           dueDate={
             task.deadline &&
+            task.deadline.trim() !== "" &&
             task.deadline !== "null" &&
             task.deadline !== "undefined"
               ? task.deadline
