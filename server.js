@@ -327,15 +327,15 @@ ${message}
     res.json({
       reply:
         assistantNote + "\n\n" + reply,
-    
+
       tasks:
         (filteredTasks || []).map(task => ({
           ...task,
-    
+
           dueDate:
             task.deadline || "Not mentioned"
         })),
-    
+
       hasStrongMatch:
         filteredTasks.length > 0
     });
@@ -354,10 +354,10 @@ ${message}
 
       error:
         error.message,
-    
+
       full:
         JSON.stringify(error, null, 2)
-    
+
     });
 
   }
@@ -387,26 +387,66 @@ app.post("/analyze", async (req, res) => {
             {
               role: "system",
               content: `
-You are an AI meeting analyzer.
+                        You are an AI meeting analyzer.
 
-Analyze the meeting and return ONLY VALID JSON.
+                        Your job is to deeply understand meeting conversations.
 
-Format:
+                        You MUST:
 
-{
-  "summary":"...",
-  "topics":["..."],
-  "tasks":[
-    {
-      "title":"...",
-      "topic":"...",
-      "tag":"...",
-      "deadline":"...",
-      "description":"..."
-    }
-  ]
-}
-`
+                        - identify tasks
+                        - identify who is responsible
+                        - understand indirect references
+                        - resolve natural language references
+                        - rewrite vague descriptions clearly
+
+                        IMPORTANT:
+
+                        If meeting notes say:
+                        - "he"
+                        - "she"
+                        - "they"
+                        - "frontend guy"
+                        - "designer"
+                        - "developer"
+                        - "backend person"
+
+                        You should infer the actual person's name from conversation context whenever possible.
+
+                        Task descriptions should ALWAYS be rewritten clearly with explicit names.
+
+                        GOOD:
+                        "Rahul should redesign dashboard before Monday"
+
+                        BAD:
+                        "He should redesign dashboard"
+
+                        GOOD:
+                        "Sarah is preparing the investor deck"
+
+                        BAD:
+                        "She is preparing the investor deck"
+
+                        If no person is identifiable,
+                        keep the original sentence naturally.
+
+                        Return ONLY VALID JSON.
+
+                        Format:
+
+                        {
+                          "summary":"...",
+                          "topics":["..."],
+                          "tasks":[
+                            {
+                              "title":"...",
+                              "topic":"...",
+                              "tag":"...",
+                              "deadline":"...",
+                              "description":"..."
+                            }
+                          ]
+                        }
+                        `
             },
 
             {
@@ -544,7 +584,7 @@ Format:
         description:
           task.description,
 
-          search_text: `
+        search_text: `
           ${task.title}
           ${task.topic}
         `.toLowerCase().trim(),
@@ -758,10 +798,10 @@ Format:
 
       error:
         error.message,
-    
+
       full:
         JSON.stringify(error, null, 2)
-    
+
     });
 
 
