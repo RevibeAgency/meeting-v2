@@ -602,8 +602,11 @@ app.post("/analyze", async (req, res) => {
         search_text: `
           ${task.title}
           ${task.topic}
+          ${task.description}
           ${task.assignee}
-        `.toLowerCase().trim(),
+          ${task.deadline}
+          ${task.tag}
+          `.toLowerCase().trim(),
         status:
           "pending",
 
@@ -644,13 +647,25 @@ app.post("/analyze", async (req, res) => {
       if (matchedTask) {
 
         const isExactDuplicate =
-          matchedTask.search_text
+          matchedTask.title
             ?.trim()
             .toLowerCase()
 
           ===
 
-          newTask.search_text
+          newTask.title
+            ?.trim()
+            .toLowerCase()
+
+          &&
+
+          matchedTask.assignee
+            ?.trim()
+            .toLowerCase()
+
+          ===
+
+          newTask.assignee
             ?.trim()
             .toLowerCase();
 
