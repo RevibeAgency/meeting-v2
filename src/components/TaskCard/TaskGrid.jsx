@@ -12,6 +12,7 @@ export default function TaskGrid({ tasks = [] }) {
         <TaskCard
           key={index}
           taskNumber={`Task ${index + 1}`}
+          assignee={task.assignee}
           topic={task.topic}
           tag={task.tag}
           createdDate={

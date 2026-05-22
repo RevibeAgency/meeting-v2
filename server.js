@@ -429,6 +429,17 @@ app.post("/analyze", async (req, res) => {
                         If no person is identifiable,
                         keep the original sentence naturally.
 
+                        Task descriptions should ALWAYS contain the assignee name when identifiable.
+
+                          You MUST extract:
+                          - assignee
+                          - task
+                          - deadline
+                          - responsibility
+
+                          If no assignee is found:
+                          assignee should be "Unassigned"
+
                         Return ONLY VALID JSON.
 
                         Format:
@@ -439,6 +450,7 @@ app.post("/analyze", async (req, res) => {
                           "tasks":[
                             {
                               "title":"...",
+                              "assignee":"...",
                               "topic":"...",
                               "tag":"...",
                               "deadline":"...",
@@ -572,6 +584,9 @@ app.post("/analyze", async (req, res) => {
         title:
           task.title,
 
+        assignee:
+          task.assignee || "Unassigned",
+
         topic:
           task.topic,
 
@@ -587,6 +602,7 @@ app.post("/analyze", async (req, res) => {
         search_text: `
           ${task.title}
           ${task.topic}
+          ${task.assignee}
         `.toLowerCase().trim(),
         status:
           "pending",

@@ -2,6 +2,7 @@ import "./taskcard.css";
 
 export default function TaskCard({
   taskNumber,
+  assignee,
   topic,
   tag,
   createdDate,
@@ -53,6 +54,13 @@ export default function TaskCard({
       </div>
 
       <div className="task-details">
+        <div className="task-info">
+          <div className="tag">
+            <span className="text-small">Assignee</span>
+          </div>
+
+          <span className="text-small white">{assignee}</span>
+        </div>
         {/* TOPIC */}
 
         <div className="task-info">
