@@ -328,12 +328,35 @@ ${message}
       reply:
         assistantNote + "\n\n" + reply,
 
-      tasks:
+        tasks:
         (filteredTasks || []).map(task => ({
-          ...task,
-
+        
+          id: task.id,
+        
+          meeting_id: task.meeting_id,
+        
+          title: task.title,
+        
+          assignee:
+            task.assignee || "Unassigned",
+        
+          topic: task.topic,
+        
+          tag: task.tag,
+        
+          deadline: task.deadline,
+        
           dueDate:
-            task.deadline || "Not mentioned"
+            task.deadline || "Not mentioned",
+        
+          description: task.description,
+        
+          created_at: task.created_at,
+        
+          status: task.status,
+        
+          version: task.version
+        
         })),
 
       hasStrongMatch:
