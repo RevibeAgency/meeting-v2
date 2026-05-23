@@ -11,6 +11,7 @@ export default function ChatMessage({ type, text, tasks }) {
 
             <TaskGrid
               tasks={tasks.map((task) => ({
+                assignee: task.assignee,
                 topic: task.topic,
                 tag: task.tag,
                 dueDate: task.deadline,
