@@ -1,169 +1,176 @@
+.taskcard-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+}
 
-.taskcard-list{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px; 
-    width: 100%;
-    flex: 1;
-    overflow-y: auto; 
-  }
-  
-  .default{
-    color: var(--color-500);
-  }
-  
-  .not-active{
-    display: none;
-  }
-  
-  .default-icon{
-    width: 50px;
-    height: 60px;
-  }
-  
-  .default > .task-card{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-  }
-  
-  .task-card{
-    background-color: var(--task-bg);
-    border-radius: 15px;
-    height: 250px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-  }
-  .task-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--color-500);
-  }
-  
-  .checkbox{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  #taskdone,#alldone,#actiondone{
-    appearance: none;
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 1.5px solid #5E5E5E;
-    border-radius: 4px;
-    display: inline-block;
-    cursor: pointer;
-    transition: 0.2s ease;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
-  }
-  
-  /* checked state */
-  input[type="checkbox"]:checked {
-    background-color: #6366f1;
-    border-color: #6366f1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17L4 12'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
-  }
-  
-  
-  .button-set{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .save-btn{
-    background-color: var(--save-bg);
-    color: var(--dark-text);
-    padding: 5px 10px;
-    border-radius: 5px;
-    line-height: 1;
-  }
-  
-  
-  .edit-btn{
-    border-radius: 50px;
-    background-color: var(--edit-btn);
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .edit-btn .icon{
-    width: 15px;
-    height: 15px;
-  }
-  
-  .task-details{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 10px;
-    gap: 5px;
-  }
-  
-  .task-info{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--dark-text);
-    font-weight: 500 !important;
-  }
-  
-  .tag{
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .tag .icon{
-    width: 15px;
-    height: 15px;
-  }
-  
-  .text-small.white{
-    color: var(--color-500);
-  }
-  
-  .purple-500{
-    color: #9584EC;
-  }
-  
-  .task-desc{
-    flex: 1;
-    margin-top: 8px;
-    border: none;
-    outline: none;
-    background: none;
-    resize: none;
-    overflow-y: auto;    
-    font-size: 14px;
-    color: var(--color-500);
-  }
-  
-  .task-desc::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  .task-desc::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .task-desc::-webkit-scrollbar-thumb {
-    background: #aaa;
-    border-radius: 10px;
-  }
+.default {
+  color: var(--color-500);
+}
+
+.not-active {
+  display: none;
+}
+
+.default-icon {
+  width: 50px;
+  height: 60px;
+}
+
+.default > .task-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.task-card {
+  background-color: var(--task-bg);
+  border-radius: 15px;
+  height: 250px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.task-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-500);
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#taskdone,
+#alldone,
+#actiondone {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #5e5e5e;
+  border-radius: 4px;
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.2s ease;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 14px;
+}
+
+/* checked state */
+input[type="checkbox"]:checked {
+  background-color: #6366f1;
+  border-color: #6366f1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17L4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 14px;
+}
+
+.task-card.completed {
+  opacity: 0.6;
+}
+
+.task-card.completed .task-desc {
+  text-decoration: line-through;
+}
+
+.button-set {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.save-btn {
+  background-color: var(--save-bg);
+  color: var(--dark-text);
+  padding: 5px 10px;
+  border-radius: 5px;
+  line-height: 1;
+}
+
+.edit-btn {
+  border-radius: 50px;
+  background-color: var(--edit-btn);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-btn .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.task-details {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+  gap: 5px;
+}
+
+.task-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--dark-text);
+  font-weight: 500 !important;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tag .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.text-small.white {
+  color: var(--color-500);
+}
+
+.purple-500 {
+  color: #9584ec;
+}
+
+.task-desc {
+  flex: 1;
+  margin-top: 8px;
+  border: none;
+  outline: none;
+  background: none;
+  resize: none;
+  overflow-y: auto;
+  font-size: 14px;
+  color: var(--color-500);
+}
+
+.task-desc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.task-desc::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-desc::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 10px;
+}

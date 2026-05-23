@@ -1,6 +1,8 @@
 import "./taskcard.css";
+import { supabase } from "../../lib/supabase";
 
 export default function TaskCard({
+  id,
   taskNumber,
   assignee,
   topic,
@@ -8,15 +10,41 @@ export default function TaskCard({
   createdDate,
   dueDate,
   description,
+  status,
+  onStatusChange,
 }) {
+  const handleTaskComplete = async (e) => {
+    const isCompleted = e.target.checked;
+
+    const newStatus = isCompleted ? "completed" : "pending";
+
+    const { error } = await supabase
+      .from("tasks")
+      .update({
+        status: newStatus,
+      })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Task update failed", error);
+
+      return;
+    }
+
+    if (onStatusChange) {
+      onStatusChange();
+    }
+  };
   return (
-    <div className="task-card">
+    <div className={`task-card ${status === "completed" ? "completed" : ""}`}>
       <div className="task-header">
         <div className="checkbox">
           <input
             type="checkbox"
-            id="taskdone"
+            id={`task-${id}`}
             className="pointer task-checkbox"
+            checked={status === "completed"}
+            onChange={handleTaskComplete}
           />
 
           <span className="text-small">{taskNumber}</span>

@@ -11,36 +11,30 @@ export default function TaskGrid({ tasks = [] }) {
       {tasks.map((task, index) => (
         <TaskCard
           key={index}
+          id={task.id}
           taskNumber={`Task ${index + 1}`}
           assignee={task.assignee}
           topic={task.topic}
           tag={task.tag}
           createdDate={
             task.created_at
-              ? new Date(task.created_at)
-                  .toLocaleDateString("en-GB")
-          
+              ? new Date(task.created_at).toLocaleDateString("en-GB")
               : task.createdAt
-              ? new Date(task.createdAt)
-                  .toLocaleDateString("en-GB")
-          
-              : new Date()
-                  .toLocaleDateString("en-GB")
+                ? new Date(task.createdAt).toLocaleDateString("en-GB")
+                : new Date().toLocaleDateString("en-GB")
           }
           dueDate={
             task.dueDate
               ? task.dueDate
-          
               : task.deadline &&
-                task.deadline.trim() !== "" &&
-                task.deadline !== "null" &&
-                task.deadline !== "undefined"
-          
-              ? task.deadline
-          
-              : "Not mentioned"
+                  task.deadline.trim() !== "" &&
+                  task.deadline !== "null" &&
+                  task.deadline !== "undefined"
+                ? task.deadline
+                : "Not mentioned"
           }
           description={task.description}
+          status={task.status}
         />
       ))}
     </div>

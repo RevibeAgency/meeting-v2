@@ -11,12 +11,23 @@ export default function ChatMessage({ type, text, tasks }) {
 
             <TaskGrid
               tasks={tasks.map((task) => ({
+                id: task.id,
+              
                 assignee: task.assignee,
+              
                 topic: task.topic,
+              
                 tag: task.tag,
+              
+                deadline: task.deadline,
+              
                 dueDate: task.deadline,
+              
                 description: task.description,
-                createdDate: new Date(task.created_at).toLocaleDateString(),
+              
+                created_at: task.created_at,
+              
+                status: task.status
               }))}
             />
           </>
