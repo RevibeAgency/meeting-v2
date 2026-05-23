@@ -8,11 +8,6 @@ import axios from "axios";
 import { supabase }
   from "./src/server/serverSupabase.js";
 
-const supabaseModule =
-  await import("./src/lib/supabase.js");
-
-const supabase =
-  supabaseModule.supabase;
 
 const app = express();
 
