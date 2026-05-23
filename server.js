@@ -5,6 +5,9 @@ import express from "express";
 import cors from "cors";
 import axios from "axios";
 
+import { supabase }
+  from "./src/server/serverSupabase.js";
+
 const supabaseModule =
   await import("./src/lib/supabase.js");
 
