@@ -1,7 +1,7 @@
 import "./chat.css";
 import TaskGrid from "../TaskCard/TaskGrid";
 
-export default function ChatMessage({ type, text, tasks }) {
+export default function ChatMessage({ type, text, tasks, onStatusChange }) {
   return (
     <div className={`chat-row ${type}`}>
       <div className={`message ${type}`}>
@@ -9,9 +9,7 @@ export default function ChatMessage({ type, text, tasks }) {
           <>
             <div className="ai-text">{text}</div>
 
-            <TaskGrid
-              tasks={tasks}
-            />
+            <TaskGrid tasks={tasks} onStatusChange={onStatusChange} />
           </>
         ) : (
           <div className="ai-text">{text}</div>

@@ -1,7 +1,10 @@
 import TaskCard from "./TaskCard";
 import EmptyTaskState from "./EmptyTaskState";
 
-export default function TaskGrid({ tasks = [] }) {
+export default function TaskGrid({
+  tasks = [],
+  onStatusChange,
+}) {
   if (tasks.length === 0) {
     return <EmptyTaskState />;
   }
@@ -35,6 +38,7 @@ export default function TaskGrid({ tasks = [] }) {
           }
           description={task.description}
           status={task.status}
+          onStatusChange={onStatusChange}
         />
       ))}
     </div>
