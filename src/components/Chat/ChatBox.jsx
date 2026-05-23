@@ -8,7 +8,7 @@ export default function ChatBox({
   chatMessages,
   setChatMessages,
   storedTasks,
-  setStoredTasks
+  setStoredTasks,
 }) {
   const [isTyping, setIsTyping] = useState(false);
 
@@ -20,10 +20,7 @@ export default function ChatBox({
       text,
     };
 
-    setChatMessages((prev) => [
-      ...prev,
-      userMessage
-    ]);
+    setChatMessages((prev) => [...prev, userMessage]);
 
     setIsTyping(true);
 
@@ -48,10 +45,7 @@ export default function ChatBox({
         tasks: data.tasks || [],
       };
 
-      setChatMessages((prev) => [
-        ...prev,
-        aiMessage
-      ]);
+      setChatMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
     } catch (error) {
       console.log(error);
@@ -141,6 +135,26 @@ export default function ChatBox({
               type={message.type}
               text={message.text}
               tasks={message.tasks}
+              onStatusChange={(taskId, newStatus) => {
+                setChatMessages((prev) =>
+                  prev.map((msg) => {
+                    if (!msg.tasks) return msg;
+
+                    return {
+                      ...msg,
+
+                      tasks: msg.tasks.map((task) =>
+                        task.id === taskId
+                          ? {
+                              ...task,
+                              status: newStatus,
+                            }
+                          : task,
+                      ),
+                    };
+                  }),
+                );
+              }}
             />
           ))}
           {isTyping && (

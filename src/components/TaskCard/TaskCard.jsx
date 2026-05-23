@@ -33,7 +33,7 @@ export default function TaskCard({
     }
 
     if (onStatusChange) {
-      onStatusChange();
+      onStatusChange(id, newStatus);
     }
   };
   return (
