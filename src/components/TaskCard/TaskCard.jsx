@@ -56,6 +56,39 @@ export default function TaskCard({
       <div className="task-details">
         <div className="task-info">
           <div className="tag">
+          <div className="icon">
+              <svg
+                width="100%"
+                viewBox="0 0 19 19"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.6749 8.96524L15.1405 14.0715H4.2749L3.68115 8.96524H4.57178L4.39366 5.52148H14.8436L14.6655 8.96524H15.6749Z"
+                  stroke="#5B5B5B"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14.4281 14.0723L14.2499 17.5754H4.98746L4.80933 14.0723H14.4281Z"
+                  stroke="#5B5B5B"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M16.8625 3.0875V5.52187H2.375V3.0875H5.58126L6.11564 1.78125H13.1813L13.7156 3.0875H16.8625Z"
+                  stroke="#5B5B5B"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M4.57178 8.96484H14.6655"
+                  stroke="#5B5B5B"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
             <span className="text-small">Assignee</span>
           </div>
 
