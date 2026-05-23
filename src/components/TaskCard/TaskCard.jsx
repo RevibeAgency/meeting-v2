@@ -1,5 +1,5 @@
 import "./taskcard.css";
-import { supabase } from "./supabase";
+import { supabase } from "../../lib/supabase";
 
 export default function TaskCard({
   id,
