@@ -12,9 +12,6 @@ export default function TaskGrid({ tasks = [] }) {
         <TaskCard
           key={index}
           id={task.id}
-          onStatusChange={() => {
-            console.log("status changed");
-          }}
           taskNumber={`Task ${index + 1}`}
           assignee={task.assignee}
           topic={task.topic}
