@@ -10,25 +10,7 @@ export default function ChatMessage({ type, text, tasks }) {
             <div className="ai-text">{text}</div>
 
             <TaskGrid
-              tasks={tasks.map((task) => ({
-                id: task.id,
-              
-                assignee: task.assignee,
-              
-                topic: task.topic,
-              
-                tag: task.tag,
-              
-                deadline: task.deadline,
-              
-                dueDate: task.deadline,
-              
-                description: task.description,
-              
-                created_at: task.created_at,
-              
-                status: task.status
-              }))}
+              tasks={tasks}
             />
           </>
         ) : (
