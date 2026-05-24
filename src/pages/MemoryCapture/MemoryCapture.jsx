@@ -70,7 +70,19 @@ function MemoryCapture({
         </div>
 
         <div className="capture-task-section">
-          <TaskGrid tasks={storedTasks} setStoredTasks={setStoredTasks} />
+          <TaskGrid
+            tasks={storedTasks}
+            onStatusChange={async () => {
+              const { data } = await supabase
+                .from("tasks")
+                .select("*")
+                .order("created_at", {
+                  ascending: false,
+                });
+
+              setStoredTasks(data || []);
+            }}
+          />
         </div>
       </div>
     </section>
