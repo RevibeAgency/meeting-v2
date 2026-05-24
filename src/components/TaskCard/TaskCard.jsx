@@ -1,6 +1,5 @@
 import "./taskcard.css";
 import { supabase } from "../../lib/supabase";
-console.log(import.meta.env.VITE_SUPABASE_URL);
 
 export default function TaskCard({
   id,

@@ -4,6 +4,8 @@ import "./memorycapture.css";
 
 import TaskGrid from "../../components/TaskCard/TaskGrid";
 import API_URL from "../../lib/api";
+import { supabase }
+  from "../../lib/supabase";
 
 function MemoryCapture({
   meetingData,
@@ -31,19 +33,17 @@ function MemoryCapture({
 
       const data = await response.json();
 
+      const { data: tasksData } = await supabase
+        .from("tasks")
+        .select("*")
+        .order("created_at", {
+          ascending: false,
+        });
+
+      setStoredTasks(tasksData || []);
+
       console.log(data);
 
-      if (data.tasks?.length) {
-        setStoredTasks((prev) => {
-          const existingIds = new Set(prev.map((task) => task.id));
-
-          const newTasks = data.tasks.filter(
-            (task) => !existingIds.has(task.id),
-          );
-
-          return [...prev, ...newTasks];
-        });
-      }
       setMeetingData(data);
     } catch (error) {
       console.error(error);
