@@ -23,7 +23,6 @@ function App() {
 
   const [storedTasks, setStoredTasks] = useState([]);
 
-
   const renderPage = () => {
     switch (activePage) {
       case "memory":
