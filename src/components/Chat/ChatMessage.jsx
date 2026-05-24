@@ -1,5 +1,6 @@
 import "./chat.css";
 import TaskGrid from "../TaskCard/TaskGrid";
+import { supabase } from "../../lib/supabase";
 
 export default function ChatMessage({ type, text, tasks, onStatusChange }) {
   return (
