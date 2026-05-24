@@ -4,8 +4,7 @@ import "./memorycapture.css";
 
 import TaskGrid from "../../components/TaskCard/TaskGrid";
 import API_URL from "../../lib/api";
-import { supabase }
-  from "../../lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 function MemoryCapture({
   meetingData,
@@ -71,7 +70,7 @@ function MemoryCapture({
         </div>
 
         <div className="capture-task-section">
-          <TaskGrid tasks={storedTasks} />
+          <TaskGrid tasks={storedTasks} setStoredTasks={setStoredTasks} />
         </div>
       </div>
     </section>
