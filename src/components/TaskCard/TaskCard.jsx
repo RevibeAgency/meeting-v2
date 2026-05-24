@@ -25,6 +25,10 @@ export default function TaskCard({
       })
       .eq("id", id);
 
+      if (onStatusChange) {
+        onStatusChange();
+      }
+
     if (error) {
       console.error("Task update failed", error);
 
