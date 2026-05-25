@@ -77,7 +77,10 @@ function App() {
         return <ActionTracker />;
 
       case "tasks":
-        return <AllTasks storedTasks={storedTasks} />;
+        return <AllTasks
+        tasks={tasks}
+        onStatusChange={syncTaskStatusEverywhere}
+      />;
 
       case "deck":
         return <PitchDecks />;
