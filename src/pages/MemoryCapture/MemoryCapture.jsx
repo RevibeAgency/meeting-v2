@@ -32,18 +32,21 @@ function MemoryCapture({
 
       const data = await response.json();
 
-      const { data: tasksData } = await supabase
+      const { data: latestTasks } = await supabase
         .from("tasks")
         .select("*")
         .order("created_at", {
           ascending: false,
         });
 
-      setStoredTasks(tasksData || []);
+      setStoredTasks(latestTasks || []);
 
-      console.log(data);
+      setMeetingData({
+        ...data,
+        tasks: latestTasks || [],
+      });
 
-      setMeetingData(data);
+      console.log(latestTasks);
     } catch (error) {
       console.error(error);
     }
