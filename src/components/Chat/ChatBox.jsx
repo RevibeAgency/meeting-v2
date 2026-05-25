@@ -9,6 +9,7 @@ export default function ChatBox({
   setChatMessages,
   storedTasks,
   setStoredTasks,
+  syncTaskStatusEverywhere,
 }) {
   const [isTyping, setIsTyping] = useState(false);
 
