@@ -707,18 +707,30 @@ app.post("/analyze", async (req, res) => {
         // SAME TASK WITHIN 24 HOURS
         // =========================
 
-        if (
-          isExactDuplicate &&
-          diffHours < 24 &&
-          matchedTask.status !== "completed"
-        ) {
+        if (isExactDuplicate) {
 
-          console.log(
-            "Skipping duplicate task"
-          );
-
-          continue;
-
+          console.log("Exact duplicate found");
+        
+          // KEEP COMPLETED TASK COMPLETED
+          if (matchedTask.status === "completed") {
+        
+            console.log(
+              "Task already completed, preserving status"
+            );
+        
+            continue;
+          }
+        
+          // SKIP DUPLICATE PENDING TASK
+          if (diffHours < 24) {
+        
+            console.log(
+              "Skipping duplicate pending task"
+            );
+        
+            continue;
+          }
+        
         }
 
         // =========================
