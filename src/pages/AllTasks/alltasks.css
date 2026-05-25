@@ -1,0 +1,255 @@
+.alltasks-page {
+    width: 100%;
+    height: 100vh;
+    background: #f5f5f5;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  /* TOP */
+  
+  .alltasks-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .alltasks-top h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #111;
+  }
+  
+  .alltasks-top p {
+    margin-top: 0.6rem;
+    font-size: 1.5rem;
+    color: #222;
+  }
+  
+  .window-actions {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .window-actions button {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 10px;
+    background: #111;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  
+  /* CONTROLS */
+  
+  .alltasks-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+  
+  .search-input {
+    flex: 1;
+    min-width: 320px;
+    height: 52px;
+    border-radius: 16px;
+    border: 1px solid #d9d9d9;
+    padding: 0 1.8rem;
+    font-size: 1.4rem;
+    background: white;
+  }
+  
+  .date-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .date-controls button {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: none;
+    background: black;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  
+  .date-range {
+    height: 52px;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    border-radius: 14px;
+    background: black;
+    color: white;
+    font-size: 1.4rem;
+  }
+  
+  .filter-btn {
+    height: 52px;
+    padding: 0 2rem;
+    border-radius: 16px;
+    border: 1px solid #c084fc;
+    background: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  
+  /* TIME */
+  
+  .time-label {
+    margin-top: 4rem;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #777;
+  }
+  
+  /* GRID */
+  
+  .alltasks-grid {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
+  }
+  
+  /* TASK CARD */
+  
+  .task-card {
+    position: relative;
+    background: black;
+    border-radius: 24px;
+    padding: 1.8rem;
+    color: white;
+    min-height: 430px;
+    transition: 0.25s ease;
+  }
+  
+  .task-card.completed-task {
+    opacity: 0.45;
+  }
+  
+  .delete-btn {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: black;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  
+  /* HEADER */
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .checkbox-wrap input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  
+  .checkbox-wrap span {
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+  
+  .task-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .save-btn {
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    background: #161616;
+    color: #555;
+    cursor: pointer;
+  }
+  
+  .edit-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: #ff2d75;
+    color: white;
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+  
+  /* DETAILS */
+  
+  .task-details {
+    margin-top: 2rem;
+  }
+  
+  .task-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+    gap: 1rem;
+  }
+  
+  .label {
+    color: #666;
+  }
+  
+  .tag {
+    background: #a855f7;
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+  }
+  
+  /* DESC */
+  
+  .task-desc {
+    margin-top: 2rem;
+    line-height: 1.6;
+    font-size: 1.5rem;
+  }
+  
+  /* RESPONSIVE */
+  
+  @media (max-width: 900px) {
+    .alltasks-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .date-controls {
+      width: 100%;
+    }
+  
+    .date-range {
+      flex: 1;
+      justify-content: center;
+    }
+  
+    .filter-btn {
+      width: 100%;
+    }
+  }
