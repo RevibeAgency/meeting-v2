@@ -25,19 +25,14 @@ export default function TaskCard({
       })
       .eq("id", id);
 
-      if (onStatusChange) {
-        onStatusChange();
+      if (error) {
+        console.error("Task update failed", error);
+        return;
       }
-
-    if (error) {
-      console.error("Task update failed", error);
-
-      return;
-    }
-
-    if (onStatusChange) {
-      onStatusChange(id, newStatus);
-    }
+      
+      if (onStatusChange) {
+        onStatusChange(id, newStatus);
+      }
   };
   return (
     <div className={`task-card ${status === "completed" ? "completed" : ""}`}>

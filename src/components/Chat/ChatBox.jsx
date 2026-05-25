@@ -154,6 +154,16 @@ export default function ChatBox({
                     };
                   }),
                 );
+                setStoredTasks((prev) =>
+                  prev.map((task) =>
+                    task.id === taskId
+                      ? {
+                          ...task,
+                          status: newStatus,
+                        }
+                      : task
+                  )
+                );
               }}
             />
           ))}

@@ -13,7 +13,7 @@ export default function TaskGrid({
     <div className="taskcard-list">
       {tasks.map((task, index) => (
         <TaskCard
-          key={index}
+          key={task.id}
           id={task.id}
           taskNumber={`Task ${index + 1}`}
           assignee={task.assignee}

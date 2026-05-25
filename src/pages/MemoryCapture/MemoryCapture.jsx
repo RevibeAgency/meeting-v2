@@ -75,15 +75,17 @@ function MemoryCapture({
         <div className="capture-task-section">
           <TaskGrid
             tasks={storedTasks}
-            onStatusChange={async () => {
-              const { data } = await supabase
-                .from("tasks")
-                .select("*")
-                .order("created_at", {
-                  ascending: false,
-                });
-
-              setStoredTasks(data || []);
+            onStatusChange={(taskId, newStatus) => {
+              setStoredTasks((prev) =>
+                prev.map((task) =>
+                  task.id === taskId
+                    ? {
+                        ...task,
+                        status: newStatus,
+                      }
+                    : task,
+                ),
+              );
             }}
           />
         </div>
