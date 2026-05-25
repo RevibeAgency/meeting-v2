@@ -23,6 +23,40 @@ function App() {
 
   const [storedTasks, setStoredTasks] = useState([]);
 
+  const syncTaskStatusEverywhere = (taskId, newStatus) => {
+    // UPDATE GLOBAL TASKS
+    setStoredTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              status: newStatus,
+            }
+          : task,
+      ),
+    );
+
+    // UPDATE ALL CHAT TASK CARDS
+    setChatMessages((prev) =>
+      prev.map((msg) => {
+        if (!msg.tasks) return msg;
+
+        return {
+          ...msg,
+
+          tasks: msg.tasks.map((task) =>
+            task.id === taskId
+              ? {
+                  ...task,
+                  status: newStatus,
+                }
+              : task,
+          ),
+        };
+      }),
+    );
+  };
+
   const renderPage = () => {
     switch (activePage) {
       case "memory":
@@ -32,6 +66,7 @@ function App() {
             setMeetingData={setMeetingData}
             storedTasks={storedTasks}
             setStoredTasks={setStoredTasks}
+            syncTaskStatusEverywhere={syncTaskStatusEverywhere}
           />
         );
 
@@ -54,6 +89,7 @@ function App() {
             setChatMessages={setChatMessages}
             storedTasks={storedTasks}
             setStoredTasks={setStoredTasks}
+            syncTaskStatusEverywhere={syncTaskStatusEverywhere}
           />
         );
     }

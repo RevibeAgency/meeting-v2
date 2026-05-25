@@ -135,36 +135,9 @@ export default function ChatBox({
               type={message.type}
               text={message.text}
               tasks={message.tasks}
-              onStatusChange={(taskId, newStatus) => {
-                setChatMessages((prev) =>
-                  prev.map((msg) => {
-                    if (!msg.tasks) return msg;
-
-                    return {
-                      ...msg,
-
-                      tasks: msg.tasks.map((task) =>
-                        task.id === taskId
-                          ? {
-                              ...task,
-                              status: newStatus,
-                            }
-                          : task,
-                      ),
-                    };
-                  }),
-                );
-                setStoredTasks((prev) =>
-                  prev.map((task) =>
-                    task.id === taskId
-                      ? {
-                          ...task,
-                          status: newStatus,
-                        }
-                      : task
-                  )
-                );
-              }}
+              onStatusChange={
+                syncTaskStatusEverywhere
+              }
             />
           ))}
           {isTyping && (

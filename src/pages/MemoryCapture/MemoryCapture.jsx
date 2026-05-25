@@ -11,6 +11,7 @@ function MemoryCapture({
   setMeetingData,
   storedTasks,
   setStoredTasks,
+  syncTaskStatusEverywhere,
 }) {
   const [note, setNote] = useState("");
 
@@ -75,18 +76,7 @@ function MemoryCapture({
         <div className="capture-task-section">
           <TaskGrid
             tasks={storedTasks}
-            onStatusChange={(taskId, newStatus) => {
-              setStoredTasks((prev) =>
-                prev.map((task) =>
-                  task.id === taskId
-                    ? {
-                        ...task,
-                        status: newStatus,
-                      }
-                    : task,
-                ),
-              );
-            }}
+            onStatusChange={syncTaskStatusEverywhere}
           />
         </div>
       </div>

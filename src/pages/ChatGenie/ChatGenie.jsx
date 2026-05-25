@@ -6,6 +6,7 @@ function ChatGenie({
   setChatMessages,
   storedTasks,
   setStoredTasks,
+  syncTaskStatusEverywhere,
 }) {
   return (
     <div className="chat-genie-page">
@@ -19,6 +20,7 @@ function ChatGenie({
           setChatMessages={setChatMessages}
           storedTasks={storedTasks}
           setStoredTasks={setStoredTasks}
+          syncTaskStatusEverywhere={syncTaskStatusEverywhere}
         />
       </div>
     </div>
