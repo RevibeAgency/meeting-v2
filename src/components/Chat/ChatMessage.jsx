@@ -10,19 +10,7 @@ export default function ChatMessage({ type, text, tasks, onStatusChange }) {
           <>
             <div className="ai-text">{text}</div>
 
-            <TaskGrid
-              tasks={tasks}
-              onStatusChange={async () => {
-                const { data } = await supabase
-                  .from("tasks")
-                  .select("*")
-                  .order("created_at", {
-                    ascending: false,
-                  });
-
-                setTasks(data || []);
-              }}
-            />
+            <TaskGrid tasks={tasks} onStatusChange={onStatusChange} />
           </>
         ) : (
           <div className="ai-text">{text}</div>
