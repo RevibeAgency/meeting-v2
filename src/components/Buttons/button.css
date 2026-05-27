@@ -1,0 +1,31 @@
+.primary-btn{
+    height: 52px;
+    padding: 0 24px;
+    border-radius: 16px;
+    border: none;
+    background: black;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  
+  .primary-btn:hover{
+    opacity: 0.9;
+  }
+  
+  .icon-btn{
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    border: none;
+    background: black;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
