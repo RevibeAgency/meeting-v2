@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { supabase } from "./lib/supabase";
 import MainLayout from "./layout/MainLayout";
 
 import ChatGenie from "./pages/ChatGenie/ChatGenie";
@@ -22,7 +22,27 @@ function App() {
   const [meetingData, setMeetingData] = useState(null);
 
   const [storedTasks, setStoredTasks] = useState([]);
+  
+  useEffect(() => {
 
+    const fetchTasks = async () => {
+  
+      const { data, error } = await supabase
+        .from("tasks")
+        .select("*")
+        .order("created_at", {
+          ascending: false,
+        });
+  
+      if (!error) {
+        setStoredTasks(data || []);
+      }
+    };
+  
+    fetchTasks();
+  
+  }, []);
+  
   const syncTaskStatusEverywhere = (taskId, newStatus) => {
     // UPDATE GLOBAL TASKS
     setStoredTasks((prev) =>

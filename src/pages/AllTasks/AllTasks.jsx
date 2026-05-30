@@ -11,14 +11,37 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const filteredTasks = tasks.filter((task) => {
+
     const searchText = `
       ${task.assignee || ""}
       ${task.topic || ""}
       ${task.tag || ""}
       ${task.description || ""}
     `.toLowerCase();
-
-    return searchText.includes(searchQuery.toLowerCase());
+  
+    const matchesSearch =
+      searchText.includes(searchQuery.toLowerCase());
+  
+    const today = new Date();
+  
+    const isOverdue =
+      task.deadline &&
+      new Date(task.deadline) < today &&
+      task.status !== "completed";
+  
+    if (selectedFilter === "Pending") {
+      return matchesSearch && task.status !== "completed";
+    }
+  
+    if (selectedFilter === "Completed") {
+      return matchesSearch && task.status === "completed";
+    }
+  
+    if (selectedFilter === "Overdue") {
+      return matchesSearch && isOverdue;
+    }
+  
+    return matchesSearch;
   });
 
   const [selectedFilter, setSelectedFilter] = useState("All Tasks");
