@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 export default function AllTasks({ tasks = [], onStatusChange }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedFilter, setSelectedFilter] = useState("All Tasks");
 
   const filteredTasks = tasks.filter((task) => {
 
@@ -44,7 +45,6 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     return matchesSearch;
   });
 
-  const [selectedFilter, setSelectedFilter] = useState("All Tasks");
 
   return (
     <div className="central-taskpage">
