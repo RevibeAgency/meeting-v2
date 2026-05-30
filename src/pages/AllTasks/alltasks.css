@@ -75,13 +75,8 @@
 .empty-task-state{
   width: 100%;
   min-height: 300px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-size: 18px;
-  font-weight: 500;
-
   color: #777;
 }
