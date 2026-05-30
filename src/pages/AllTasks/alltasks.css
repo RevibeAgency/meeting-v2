@@ -1,7 +1,6 @@
 .central-taskpage{
   width: 100%;
   height: 100%;
-  overflow-y: auto;
 }
 
 .wrapper-central{
@@ -70,6 +69,7 @@
 
 .task-section{
   width: 100%;
+  overflow-y: auto;
 }
 
 .empty-task-state{
