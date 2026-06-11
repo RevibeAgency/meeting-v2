@@ -39,10 +39,40 @@ export default function TaskCard({
   return (
     <div className={`task-card ${status === "completed" ? "completed" : ""}`}>
       {showDelete && (
-        <button className="task-delete-btn" onClick={() => onDelete(id)}>
-          ×
-        </button>
-      )}
+  <button
+    className="task-delete-btn"
+    onClick={() => onDelete(id)}
+  >
+    <svg
+      width="38"
+      height="38"
+      viewBox="0 0 38 38"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M18.9998 34.8327C27.7443 34.8327 34.8332 27.7439 34.8332 18.9993C34.8332 10.2548 27.7443 3.16602 18.9998 3.16602C10.2553 3.16602 3.1665 10.2548 3.1665 18.9993C3.1665 27.7439 10.2553 34.8327 18.9998 34.8327Z"
+        fill="#0E0E0E"
+      />
+
+      <path
+        d="M23.75 14.25L14.25 23.75"
+        stroke="white"
+        strokeWidth="1.58333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      <path
+        d="M14.25 14.25L23.75 23.75"
+        stroke="white"
+        strokeWidth="1.58333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </button>
+)}
       <div className="task-header">
         <div className="checkbox">
           <input
