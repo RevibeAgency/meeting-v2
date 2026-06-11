@@ -4,6 +4,8 @@ import EmptyTaskState from "./EmptyTaskState";
 export default function TaskGrid({
   tasks = [],
   onStatusChange,
+  onDelete,
+  showDelete = false,
 }) {
   if (tasks.length === 0) {
     return <EmptyTaskState />;
@@ -39,6 +41,8 @@ export default function TaskGrid({
           description={task.description}
           status={task.status}
           onStatusChange={onStatusChange}
+          showDelete={showDelete}
+onDelete={onDelete}
         />
       ))}
     </div>

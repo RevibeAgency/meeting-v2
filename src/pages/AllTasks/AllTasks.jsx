@@ -5,6 +5,7 @@ import IconButton from "../../components/Buttons/IconButton";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { supabase } from "../../lib/supabase";
 
 export default function AllTasks({ tasks = [], onStatusChange }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,7 +46,26 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     return matchesSearch;
   });
 
+  const handleDeleteTask = async (taskId) => {
 
+    const confirmed = window.confirm(
+      "Delete this task permanently?"
+    );
+  
+    if (!confirmed) return;
+  
+    const { error } = await supabase
+      .from("tasks")
+      .delete()
+      .eq("id", taskId);
+  
+    if (error) {
+      console.error(error);
+      return;
+    }
+  
+    window.location.reload();
+  };
   return (
     <div className="central-taskpage">
       <div className="wrapper-central">
@@ -135,7 +155,12 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
           {filteredTasks.length === 0 ? (
             <div className="empty-task-state">No tasks analyzed yet...</div>
           ) : (
-            <TaskGrid tasks={filteredTasks} onStatusChange={onStatusChange} />
+            <TaskGrid
+  tasks={filteredTasks}
+  onStatusChange={onStatusChange}
+  showDelete={true}
+  onDelete={handleDeleteTask}
+/>
           )}
         </div>
       </div>

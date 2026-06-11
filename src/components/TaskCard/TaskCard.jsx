@@ -12,6 +12,8 @@ export default function TaskCard({
   description,
   status,
   onStatusChange,
+  onDelete,
+  showDelete = false,
 }) {
   const handleTaskComplete = async (e) => {
     const isCompleted = e.target.checked;
@@ -25,17 +27,22 @@ export default function TaskCard({
       })
       .eq("id", id);
 
-      if (error) {
-        console.error("Task update failed", error);
-        return;
-      }
-      
-      if (onStatusChange) {
-        onStatusChange(id, newStatus);
-      }
+    if (error) {
+      console.error("Task update failed", error);
+      return;
+    }
+
+    if (onStatusChange) {
+      onStatusChange(id, newStatus);
+    }
   };
   return (
     <div className={`task-card ${status === "completed" ? "completed" : ""}`}>
+      {showDelete && (
+        <button className="task-delete-btn" onClick={() => onDelete(id)}>
+          ×
+        </button>
+      )}
       <div className="task-header">
         <div className="checkbox">
           <input
