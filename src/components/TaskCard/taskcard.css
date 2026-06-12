@@ -4,13 +4,9 @@
   gap: 10px;
   width: 100%;
   flex: 1;
-  overflow-y: auto;
   position: relative;
 }
 
-.task-card-container{
-  position: relative;
-}
 
 .default {
   color: var(--color-500);
