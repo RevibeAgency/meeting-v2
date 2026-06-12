@@ -13,57 +13,49 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
   const [selectedFilter, setSelectedFilter] = useState("All Tasks");
 
   const filteredTasks = tasks.filter((task) => {
-
     const searchText = `
       ${task.assignee || ""}
       ${task.topic || ""}
       ${task.tag || ""}
       ${task.description || ""}
     `.toLowerCase();
-  
-    const matchesSearch =
-      searchText.includes(searchQuery.toLowerCase());
-  
+
+    const matchesSearch = searchText.includes(searchQuery.toLowerCase());
+
     const today = new Date();
-  
+
     const isOverdue =
       task.deadline &&
       new Date(task.deadline) < today &&
       task.status !== "completed";
-  
+
     if (selectedFilter === "Pending") {
       return matchesSearch && task.status !== "completed";
     }
-  
+
     if (selectedFilter === "Completed") {
       return matchesSearch && task.status === "completed";
     }
-  
+
     if (selectedFilter === "Overdue") {
       return matchesSearch && isOverdue;
     }
-  
+
     return matchesSearch;
   });
 
   const handleDeleteTask = async (taskId) => {
+    const confirmed = window.confirm("Delete this task permanently?");
 
-    const confirmed = window.confirm(
-      "Delete this task permanently?"
-    );
-  
     if (!confirmed) return;
-  
-    const { error } = await supabase
-      .from("tasks")
-      .delete()
-      .eq("id", taskId);
-  
+
+    const { error } = await supabase.from("tasks").delete().eq("id", taskId);
+
     if (error) {
       console.error(error);
       return;
     }
-  
+
     window.location.reload();
   };
   return (
@@ -156,11 +148,11 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
             <div className="empty-task-state">No tasks analyzed yet...</div>
           ) : (
             <TaskGrid
-  tasks={filteredTasks}
-  onStatusChange={onStatusChange}
-  showDelete={true}
-  onDelete={handleDeleteTask}
-/>
+              tasks={filteredTasks}
+              onStatusChange={onStatusChange}
+              showDelete={true}
+              onDelete={handleDeleteTask}
+            />
           )}
         </div>
       </div>
