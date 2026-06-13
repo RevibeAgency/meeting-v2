@@ -108,6 +108,7 @@
   border-radius: 12px !important;
   overflow: hidden;
   font-family: inherit;
+  z-index: 6;
 }
 
 .react-datepicker__header{
