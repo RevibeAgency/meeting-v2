@@ -62,7 +62,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     <div className="central-taskpage">
       <div className="wrapper-central">
         <div className="search-wrapper">
-          <div className="search-icon">
+          <div className="search-icon" onClick={() => setSearchQuery("")}>
             <svg
               width="24"
               height="24"
