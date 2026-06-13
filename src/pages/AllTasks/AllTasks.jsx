@@ -61,13 +61,38 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
   return (
     <div className="central-taskpage">
       <div className="wrapper-central">
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search all tasks..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        <div className="search-wrapper">
+          <div className="search-icon">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20.9999 21.0002L16.6599 16.6602"
+                stroke="#BDBDBD"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
+                stroke="#BDBDBD"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search all tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
 
         {/* TOP BAR */}
         <div className="utility-bar">
