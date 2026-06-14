@@ -9,7 +9,7 @@ import { supabase } from "../../lib/supabase";
 
 export default function AllTasks({ tasks = [], onStatusChange }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("All Tasks");
 
   const filteredTasks = tasks.filter((task) => {
@@ -29,19 +29,24 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       new Date(task.deadline) < today &&
       task.status !== "completed";
 
+    // DATE FILTER
+    const matchesDate =
+      !selectedDate ||
+      new Date(task.created_at).toDateString() === selectedDate.toDateString();
+
     if (selectedFilter === "Pending") {
-      return matchesSearch && task.status !== "completed";
+      return matchesSearch && matchesDate && task.status !== "completed";
     }
 
     if (selectedFilter === "Completed") {
-      return matchesSearch && task.status === "completed";
+      return matchesSearch && matchesDate && task.status === "completed";
     }
 
     if (selectedFilter === "Overdue") {
-      return matchesSearch && isOverdue;
+      return matchesSearch && matchesDate && isOverdue;
     }
 
-    return matchesSearch;
+    return matchesSearch && matchesDate;
   });
 
   const handleDeleteTask = async (taskId) => {
@@ -149,7 +154,9 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
                     </svg>
                   </div>
 
-                  <span>{selectedDate.toDateString()}</span>
+                  <span>
+                    {selectedDate ? selectedDate.toDateString() : "All Dates"}
+                  </span>
                 </button>
               }
             />
@@ -170,7 +177,11 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
         {/* TASK GRID */}
         <div className="task-section">
           {filteredTasks.length === 0 ? (
-            <div className="empty-task-state">No tasks analyzed yet...</div>
+            <div className="empty-task-state">
+              {selectedDate
+                ? "No tasks found for this date"
+                : "No tasks analyzed yet..."}
+            </div>
           ) : (
             <TaskGrid
               tasks={filteredTasks}
