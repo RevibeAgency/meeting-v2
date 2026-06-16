@@ -31,13 +31,12 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
 
     // DATE FILTER
     const matchesDate =
-  !selectedDate ||
-  task.created_at.slice(0, 10) ===
-    selectedDate.toISOString().slice(0, 10);
+      !selectedDate ||
+      task.created_at.slice(0, 10) === selectedDate.toLocaleDateString("en-CA");
 
-console.log("Task Date:", task.created_at.slice(0, 10));
-console.log("Selected:", selectedDate?.toISOString().slice(0, 10));
-console.log("Match:", matchesDate);
+    console.log("Task:", task.created_at.slice(0, 10));
+    console.log("Selected:", selectedDateString);
+    console.log("Match:", matchesDate);
     if (selectedFilter === "Pending") {
       return matchesSearch && matchesDate && task.status !== "completed";
     }
