@@ -154,9 +154,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
                     </svg>
                   </div>
 
-                  <span>
-                    {selectedDate ? selectedDate.toDateString() : "All Dates"}
-                  </span>
+                  <span>{(selectedDate || new Date()).toDateString()}</span>
                 </button>
               }
             />
