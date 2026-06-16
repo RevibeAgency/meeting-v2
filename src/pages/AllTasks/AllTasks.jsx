@@ -31,13 +31,9 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
 
     // DATE FILTER
     const matchesDate =
-      !selectedDate ||
-      new Date(task.created_at).toDateString() === selectedDate.toDateString();
-
-    console.log(task.created_at);
-    console.log(new Date(task.created_at).toDateString());
-    console.log(selectedDate?.toDateString());
-
+  !selectedDate ||
+  task.created_at.slice(0, 10) ===
+    selectedDate.toISOString().slice(0, 10);
     if (selectedFilter === "Pending") {
       return matchesSearch && matchesDate && task.status !== "completed";
     }
