@@ -30,9 +30,14 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       task.status !== "completed";
 
     // DATE FILTER
+    const selectedDateString = selectedDate
+      ? `${selectedDate.getFullYear()}-${String(
+          selectedDate.getMonth() + 1,
+        ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : null;
+
     const matchesDate =
-      !selectedDate ||
-      task.created_at.slice(0, 10) === selectedDate.toLocaleDateString("en-CA");
+      !selectedDate || task.created_at.slice(0, 10) === selectedDateString;
 
     console.log("Task:", task.created_at.slice(0, 10));
     console.log("Selected:", selectedDateString);
