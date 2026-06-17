@@ -35,8 +35,11 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
         ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`
       : null;
 
-    const matchesDate =
-      !selectedDate || task.created_at.slice(0, 10) === selectedDateString;
+    let matchesDate = true;
+
+    if (selectedDate) {
+      matchesDate = task.created_at.slice(0, 10) === selectedDateString;
+    }
 
     const taskDate = new Date(task.created_at);
 
@@ -60,11 +63,16 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     }
 
     if (dateRange === "This Week") {
-      matchesQuickFilter = taskDate >= startOfWeek;
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+      matchesQuickFilter = taskDate >= startOfWeek && taskDate < endOfWeek;
     }
 
     if (dateRange === "This Month") {
-      matchesQuickFilter = taskDate >= startOfMonth;
+      matchesQuickFilter =
+        taskDate.getMonth() === today.getMonth() &&
+        taskDate.getFullYear() === today.getFullYear();
     }
 
     if (selectedFilter === "Pending") {
@@ -190,7 +198,10 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
             {/* DATE */}
             <DatePicker
               selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
+              onChange={(date) => {
+                setSelectedDate(date);
+                setDateRange("Quick Filters");
+              }}
               dateFormat="MMM dd, yyyy"
               customInput={
                 <button className="date-box">
@@ -239,7 +250,10 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
             />
             <PrimaryButton
               selected={dateRange}
-              setSelected={setDateRange}
+              setSelected={(value) => {
+                setDateRange(value);
+                setSelectedDate(null);
+              }}
               options={["Quick Filters", "Today", "This Week", "This Month"]}
             />
             {/* FILTER BUTTON */}
@@ -258,7 +272,9 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
             <div className="empty-task-state">
               {selectedDate
                 ? "No tasks found for this date"
-                : "No tasks analyzed yet..."}
+                : dateRange !== "Quick Filters"
+                  ? `No tasks found for ${dateRange}`
+                  : "No tasks analyzed yet..."}
             </div>
           ) : (
             <>
