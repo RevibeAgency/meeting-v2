@@ -11,7 +11,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("All Tasks");
-
+  const [dateRange, setDateRange] = useState("Today");
   const filteredTasks = tasks.filter((task) => {
     const searchText = `
       ${task.assignee || ""}
@@ -51,7 +51,32 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       return matchesSearch && matchesDate && isOverdue;
     }
 
-    return matchesSearch && matchesDate;
+    const taskDate = new Date(task.created_at);
+
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const startOfWeek = new Date();
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    let matchesQuickFilter = true;
+
+    if (dateRange === "Today") {
+      matchesQuickFilter = taskDate >= startOfToday;
+    }
+
+    if (dateRange === "This Week") {
+      matchesQuickFilter = taskDate >= startOfWeek;
+    }
+
+    if (dateRange === "This Month") {
+      matchesQuickFilter = taskDate >= startOfMonth;
+    }
+
+    return matchesSearch && matchesDate && matchesQuickFilter;
   });
 
   const groupedTasks = filteredTasks.reduce((groups, task) => {
@@ -149,9 +174,6 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
           <h1 className="header">Tasks</h1>
 
           <div className="utility-wrap">
-            {/* LEFT ARROW */}
-            <IconButton type="left" />
-
             {/* DATE */}
             <DatePicker
               selected={selectedDate}
@@ -202,10 +224,11 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
                 </button>
               }
             />
-
-            {/* RIGHT ARROW */}
-            <IconButton type="right" />
-
+            <PrimaryButton
+              selected={dateRange}
+              setSelected={setDateRange}
+              options={["Today", "This Week", "This Month"]}
+            />
             {/* FILTER BUTTON */}
             <PrimaryButton
               selected={selectedFilter}
