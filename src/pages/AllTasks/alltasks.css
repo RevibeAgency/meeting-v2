@@ -94,6 +94,18 @@
   overflow-y:auto;
 }
 
+.display-date {
+  margin: 32px 0 16px;
+  text-align: center;
+
+  color: #7d7d7d;
+  font-size: 12px;
+  font-weight: 500;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .empty-task-state{
   width: 100%;
   min-height: 300px;

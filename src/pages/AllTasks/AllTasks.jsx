@@ -39,9 +39,6 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     const matchesDate =
       !selectedDate || task.created_at.slice(0, 10) === selectedDateString;
 
-    console.log("Task:", task.created_at.slice(0, 10));
-    console.log("Selected:", selectedDateString);
-    console.log("Match:", matchesDate);
     if (selectedFilter === "Pending") {
       return matchesSearch && matchesDate && task.status !== "completed";
     }
@@ -56,6 +53,45 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
 
     return matchesSearch && matchesDate;
   });
+
+  const groupedTasks = filteredTasks.reduce((groups, task) => {
+    const date = new Date(task.created_at);
+
+    const today = new Date();
+    const yesterday = new Date();
+
+    yesterday.setDate(today.getDate() - 1);
+
+    let label;
+
+    if (date.toDateString() === today.toDateString()) {
+      label = `TODAY, ${date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      label = `YESTERDAY, ${date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
+    } else {
+      label = date.toLocaleString([], {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    if (!groups[label]) {
+      groups[label] = [];
+    }
+
+    groups[label].push(task);
+
+    return groups;
+  }, {});
 
   const handleDeleteTask = async (taskId) => {
     const confirmed = window.confirm("Delete this task permanently?");
@@ -189,12 +225,20 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
                 : "No tasks analyzed yet..."}
             </div>
           ) : (
-            <TaskGrid
-              tasks={filteredTasks}
-              onStatusChange={onStatusChange}
-              showDelete={true}
-              onDelete={handleDeleteTask}
-            />
+            <>
+              {Object.entries(groupedTasks).map(([label, taskGroup]) => (
+                <div key={label}>
+                  <div className="display-date">{label}</div>
+
+                  <TaskGrid
+                    tasks={taskGroup}
+                    onStatusChange={onStatusChange}
+                    showDelete={true}
+                    onDelete={handleDeleteTask}
+                  />
+                </div>
+              ))}
+            </>
           )}
         </div>
       </div>
