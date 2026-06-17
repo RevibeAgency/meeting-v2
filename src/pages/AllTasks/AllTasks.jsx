@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./alltasks.css";
 import TaskGrid from "../../components/TaskCard/TaskGrid";
-import IconButton from "../../components/Buttons/IconButton";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -39,18 +38,6 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     const matchesDate =
       !selectedDate || task.created_at.slice(0, 10) === selectedDateString;
 
-    if (selectedFilter === "Pending") {
-      return matchesSearch && matchesDate && task.status !== "completed";
-    }
-
-    if (selectedFilter === "Completed") {
-      return matchesSearch && matchesDate && task.status === "completed";
-    }
-
-    if (selectedFilter === "Overdue") {
-      return matchesSearch && matchesDate && isOverdue;
-    }
-
     const taskDate = new Date(task.created_at);
 
     const startOfToday = new Date();
@@ -74,6 +61,33 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
 
     if (dateRange === "This Month") {
       matchesQuickFilter = taskDate >= startOfMonth;
+    }
+
+    if (selectedFilter === "Pending") {
+      return (
+        matchesSearch &&
+        matchesDate &&
+        matchesQuickFilter &&
+        task.status !== "completed"
+      );
+    }
+
+    if (selectedFilter === "Completed") {
+      return (
+        matchesSearch &&
+        matchesDate &&
+        matchesQuickFilter &&
+        task.status === "completed"
+      );
+    }
+
+    if (selectedFilter === "Overdue") {
+      return (
+        matchesSearch &&
+        matchesDate &&
+        matchesQuickFilter &&
+        isOverdue
+      );
     }
 
     return matchesSearch && matchesDate && matchesQuickFilter;
