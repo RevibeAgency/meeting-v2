@@ -10,7 +10,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("All Tasks");
-  const [dateRange, setDateRange] = useState("Today");
+  const [dateRange, setDateRange] = useState("Quick Filters");
   const filteredTasks = tasks.filter((task) => {
     const searchText = `
       ${task.assignee || ""}
@@ -51,8 +51,12 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
 
     let matchesQuickFilter = true;
 
+    if (dateRange === "Quick Filters") {
+      matchesQuickFilter = true;
+    }
+
     if (dateRange === "Today") {
-      matchesQuickFilter = taskDate >= startOfToday;
+      matchesQuickFilter = taskDate.toDateString() === today.toDateString();
     }
 
     if (dateRange === "This Week") {
@@ -82,12 +86,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     }
 
     if (selectedFilter === "Overdue") {
-      return (
-        matchesSearch &&
-        matchesDate &&
-        matchesQuickFilter &&
-        isOverdue
-      );
+      return matchesSearch && matchesDate && matchesQuickFilter && isOverdue;
     }
 
     return matchesSearch && matchesDate && matchesQuickFilter;
@@ -241,7 +240,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
             <PrimaryButton
               selected={dateRange}
               setSelected={setDateRange}
-              options={["Today", "This Week", "This Month"]}
+              options={["Quick Filters", "Today", "This Week", "This Month"]}
             />
             {/* FILTER BUTTON */}
             <PrimaryButton
