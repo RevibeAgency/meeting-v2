@@ -470,8 +470,23 @@ app.post("/analyze", async (req, res) => {
                             Friday -> 2026-06-19
                             Next Week -> calculate actual date
 
-                            If exact date cannot be determined:
-                            due_date = null
+                            If deadline says:
+
+                              next month
+                              -> use first day of next month
+
+                              this month
+                              -> use last day of current month
+
+                              before launch
+                              -> use the launch date if mentioned elsewhere
+
+                              before release
+                              -> use release date if mentioned elsewhere
+
+                              If no reasonable date can be inferred:
+
+                              "due_date": null
 
                             Always return due_date.
 
