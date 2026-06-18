@@ -15,11 +15,15 @@ function MemoryCapture({
   const [note, setNote] = useState("");
 
   useEffect(() => {
-    const savedTasks = sessionStorage.getItem("memoryCaptureTasks");
-  
-    if (savedTasks) {
-      setStoredTasks(JSON.parse(savedTasks));
-    }
+    const handleUnload = () => {
+      sessionStorage.removeItem("memoryCaptureTasks");
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
   }, []);
 
   const handleAnalyze = async () => {
@@ -51,7 +55,7 @@ function MemoryCapture({
 
       sessionStorage.setItem(
         "memoryCaptureTasks",
-        JSON.stringify(latestTasks || [])
+        JSON.stringify(latestTasks || []),
       );
 
       setMeetingData({
