@@ -472,23 +472,44 @@ app.post("/analyze", async (req, res) => {
 
                             If deadline says:
 
-                              next month
-                              -> use first day of next month
+                              Deadline Resolution Rules:
 
-                              this month
-                              -> use last day of current month
+                                Tomorrow
+                                → tomorrow's date
 
-                              before launch
-                              -> use the launch date if mentioned elsewhere
+                                Friday / Monday / Wednesday
+                                → nearest upcoming day
 
-                              before release
-                              -> use release date if mentioned elsewhere
+                                This Week
+                                → end of current week
 
-                              If no reasonable date can be inferred:
+                                End of Week
+                                → Sunday of current week
 
-                              "due_date": null
+                                This Month
+                                → last day of current month
 
-                            Always return due_date.
+                                Next Month
+                                → last day of next month
+
+                                Before Launch
+                                → if launch date exists, use one day before launch
+
+                                Before Release
+                                → if release date exists, use one day before release
+
+                                ASAP
+                                → tomorrow
+
+                                No Deadline Discussed
+                                → due_date = null
+
+                                If no reasonable calendar date can be inferred:
+                                due_date = null
+
+                                Always return:
+                                due_date
+
 
                         Return ONLY VALID JSON.
 
