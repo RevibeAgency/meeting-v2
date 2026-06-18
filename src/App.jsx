@@ -22,27 +22,28 @@ function App() {
   const [meetingData, setMeetingData] = useState(null);
 
   const [storedTasks, setStoredTasks] = useState([]);
-  
-  useEffect(() => {
+  const [memoryTasks, setMemoryTasks] = useState([]);
 
-    const fetchTasks = async () => {
-  
-      const { data, error } = await supabase
-        .from("tasks")
-        .select("*")
-        .order("created_at", {
-          ascending: false,
-        });
-  
-      if (!error) {
-        setStoredTasks(data || []);
-      }
-    };
-  
-    fetchTasks();
-  
-  }, []);
-  
+  // useEffect(() => {
+
+  //   const fetchTasks = async () => {
+
+  //     const { data, error } = await supabase
+  //       .from("tasks")
+  //       .select("*")
+  //       .order("created_at", {
+  //         ascending: false,
+  //       });
+
+  //     if (!error) {
+  //       setStoredTasks(data || []);
+  //     }
+  //   };
+
+  //   fetchTasks();
+
+  // }, []);
+
   const syncTaskStatusEverywhere = (taskId, newStatus) => {
     // UPDATE GLOBAL TASKS
     setStoredTasks((prev) =>
@@ -84,8 +85,8 @@ function App() {
           <MemoryCapture
             meetingData={meetingData}
             setMeetingData={setMeetingData}
-            storedTasks={storedTasks}
-            setStoredTasks={setStoredTasks}
+            storedTasks={memoryTasks}
+            setStoredTasks={setMemoryTasks}
             syncTaskStatusEverywhere={syncTaskStatusEverywhere}
           />
         );

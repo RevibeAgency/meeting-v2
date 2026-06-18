@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./alltasks.css";
 import TaskGrid from "../../components/TaskCard/TaskGrid";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
@@ -11,7 +11,22 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("All Tasks");
   const [dateRange, setDateRange] = useState("Quick Filters");
-  const filteredTasks = tasks.filter((task) => {
+  const [allTasks, setAllTasks] = useState([]);
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const { data, error } = await supabase
+        .from("tasks")
+        .select("*")
+        .order("created_at", { ascending: false });
+  
+      if (!error) {
+        setAllTasks(data || []);
+      }
+    };
+  
+    fetchTasks();
+  }, []);
+  const filteredTasks = allTasks.filter((task) => {
     const searchText = `
       ${task.assignee || ""}
       ${task.topic || ""}
