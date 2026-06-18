@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import "./memorycapture.css";
 
 import TaskGrid from "../../components/TaskCard/TaskGrid";
@@ -14,6 +13,14 @@ function MemoryCapture({
   syncTaskStatusEverywhere,
 }) {
   const [note, setNote] = useState("");
+
+  useEffect(() => {
+    const savedTasks = sessionStorage.getItem("memoryCaptureTasks");
+  
+    if (savedTasks) {
+      setStoredTasks(JSON.parse(savedTasks));
+    }
+  }, []);
 
   const handleAnalyze = async () => {
     if (!note.trim()) return;
@@ -41,6 +48,11 @@ function MemoryCapture({
         });
 
       setStoredTasks(latestTasks || []);
+
+      sessionStorage.setItem(
+        "memoryCaptureTasks",
+        JSON.stringify(latestTasks || [])
+      );
 
       setMeetingData({
         ...data,
