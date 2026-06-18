@@ -48,6 +48,7 @@ function MemoryCapture({
       });
 
       console.log(latestTasks);
+      console.log("TASKS RETURNED:", latestTasks?.length);
     } catch (error) {
       console.error(error);
     }
