@@ -24,8 +24,8 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     const today = new Date();
 
     const isOverdue =
-      task.deadline &&
-      new Date(task.deadline) < today &&
+      task.due_date &&
+      new Date(task.due_date) < today &&
       task.status !== "completed";
 
     // DATE FILTER

@@ -326,35 +326,35 @@ ${message}
       reply:
         assistantNote + "\n\n" + reply,
 
-        tasks:
+      tasks:
         (filteredTasks || []).map(task => ({
-        
+
           id: task.id,
-        
+
           meeting_id: task.meeting_id,
-        
+
           title: task.title,
-        
+
           assignee:
             task.assignee || "Unassigned",
-        
+
           topic: task.topic,
-        
+
           tag: task.tag,
-        
+
           deadline: task.deadline,
-        
+
           dueDate:
             task.deadline || "Not mentioned",
-        
+
           description: task.description,
-        
+
           created_at: task.created_at,
-        
+
           status: task.status,
-        
+
           version: task.version
-        
+
         })),
 
       hasStrongMatch:
@@ -461,6 +461,20 @@ app.post("/analyze", async (req, res) => {
                           If no assignee is found:
                           assignee should be "Unassigned"
 
+                          Today's date is ${new Date().toISOString().split("T")[0]}.
+
+                            Convert deadlines into actual calendar dates.
+
+                            Examples:
+
+                            Friday -> 2026-06-19
+                            Next Week -> calculate actual date
+
+                            If exact date cannot be determined:
+                            due_date = null
+
+                            Always return due_date.
+
                         Return ONLY VALID JSON.
 
                         Format:
@@ -475,6 +489,7 @@ app.post("/analyze", async (req, res) => {
                               "topic":"...",
                               "tag":"...",
                               "deadline":"...",
+                              "due_date":"YYYY-MM-DD",
                               "description":"..."
                             }
                           ]
@@ -617,6 +632,9 @@ app.post("/analyze", async (req, res) => {
         deadline:
           task.deadline,
 
+        due_date:
+          task.due_date || null,
+
         description:
           task.description,
 
@@ -710,27 +728,27 @@ app.post("/analyze", async (req, res) => {
         if (isExactDuplicate) {
 
           console.log("Exact duplicate found");
-        
+
           // KEEP COMPLETED TASK COMPLETED
           if (matchedTask.status === "completed") {
-        
+
             console.log(
               "Task already completed, preserving status"
             );
-        
+
             continue;
           }
-        
+
           // SKIP DUPLICATE PENDING TASK
           if (diffHours < 24) {
-        
+
             console.log(
               "Skipping duplicate pending task"
             );
-        
+
             continue;
           }
-        
+
         }
 
         // =========================
@@ -752,6 +770,9 @@ app.post("/analyze", async (req, res) => {
 
             deadline:
               newTask.deadline,
+
+            due_date:
+              newTask.due_date,
 
             description:
               newTask.description,
