@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./memorycapture.css";
-
+import MeetingLoading from "../../components/MeetingLoading/MeetingLoading";
 import TaskGrid from "../../components/TaskCard/TaskGrid";
 import API_URL from "../../lib/api";
 import { supabase } from "../../lib/supabase";
@@ -13,10 +13,13 @@ function MemoryCapture({
   syncTaskStatusEverywhere,
 }) {
   const [note, setNote] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
 
   const handleAnalyze = async () => {
     if (!note.trim()) return;
+
+    setIsAnalyzing(true);
 
     try {
       const response = await fetch(`${API_URL}/analyze`, {
@@ -48,14 +51,18 @@ function MemoryCapture({
         tasks: latestTasks || [],
       });
 
+      setIsAnalyzing(false);
+
       console.log(latestTasks);
     } catch (error) {
       console.error(error);
+      setIsAnalyzing(false);
     }
   };
 
   return (
     <section id="memory-capture">
+    {isAnalyzing && <MeetingLoading />}
       <div className="capture-wrapper">
         <div className="wrapper-header">
           <span className="text-medium">Memory Capture</span>
