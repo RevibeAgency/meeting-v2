@@ -85,7 +85,7 @@ function App() {
 
   const renderPage = () => {
     if (DEBUG_LOADER) {
-      return <MeetingLoading />;
+      return <MeetingAnalysisLoader />;
     }
     switch (activePage) {
       case "memory":
