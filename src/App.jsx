@@ -10,7 +10,7 @@ import AllTasks from "./pages/AllTasks/AllTasks";
 import PitchDecks from "./pages/PitchDecks/PitchDecks";
 
 
-import MeetingAnalysisLoader from "./components/MeetingAnalysisLoader"; //have to remogve it later eta shudu debug er jonno 
+import MeetingLoading from "./components/MeetingLoading/MeetingAnalysisLoader"; //have to remogve it later eta shudu debug er jonno 
 
 import "./layout/layout.css";
 
@@ -85,7 +85,7 @@ function App() {
 
   const renderPage = () => {
     if (DEBUG_LOADER) {
-      return <MeetingAnalysisLoader />;
+      return <MeetingLoading />;
     }
     switch (activePage) {
       case "memory":
