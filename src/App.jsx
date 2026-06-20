@@ -9,6 +9,9 @@ import ActionTracker from "./pages/ActionTracker/ActionTracker";
 import AllTasks from "./pages/AllTasks/AllTasks";
 import PitchDecks from "./pages/PitchDecks/PitchDecks";
 
+
+import MeetingAnalysisLoader from "./components/MeetingAnalysisLoader"; //have to remogve it later eta shudu debug er jonno 
+
 import "./layout/layout.css";
 
 function App() {
@@ -79,6 +82,10 @@ function App() {
   };
 
   const renderPage = () => {
+    const DEBUG_LOADER = true;
+    if (DEBUG_LOADER) {
+      return <MeetingAnalysisLoader />;
+    }
     switch (activePage) {
       case "memory":
         return (
