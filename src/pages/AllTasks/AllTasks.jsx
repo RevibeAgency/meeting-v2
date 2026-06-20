@@ -4,6 +4,7 @@ import {
   CalendarGridIcon,
   FilterIcon,
   SearchIcon,
+  QuickFilter,
 } from "../../assets/icons/Icons";
 import TaskGrid from "../../components/TaskCard/TaskGrid";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
@@ -178,7 +179,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       <div className="wrapper-central">
         <div className="search-wrapper">
           <div className="search-icon" onClick={() => setSearchQuery("")}>
-          {icon}
+          {SearchIcon}
           </div>
 
           <input
@@ -198,7 +199,6 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
           <div className="utility-wrap">
             {/* DATE */}
             <DatePicker
-            icon={CalendarGridIcon}
               selected={selectedDate}
               onChange={(date) => {
                 setSelectedDate(date);
@@ -208,7 +208,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
               customInput={
                 <button className="date-box">
                   <div className="icon">
-                  {icon}
+                  {CalendarGridIcon}
                   </div>
 
                   <span>{(selectedDate || new Date()).toDateString()}</span>
@@ -216,6 +216,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
               }
             />
             <PrimaryButton
+             icon={QuickFilter}
               selected={dateRange}
               setSelected={(value) => {
                 setDateRange(value);
