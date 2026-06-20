@@ -10,7 +10,6 @@ import AllTasks from "./pages/AllTasks/AllTasks";
 import PitchDecks from "./pages/PitchDecks/PitchDecks";
 
 
-import MeetingLoading from "./components/MeetingLoading/MeetingAnalysisLoader"; //have to remogve it later eta shudu debug er jonno 
 
 import "./layout/layout.css";
 
@@ -81,12 +80,7 @@ function App() {
     );
   };
 
-  const DEBUG_LOADER = true;
-
   const renderPage = () => {
-    if (DEBUG_LOADER) {
-      return <MeetingLoading />;
-    }
     switch (activePage) {
       case "memory":
         return (
