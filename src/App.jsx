@@ -81,10 +81,11 @@ function App() {
     );
   };
 
+  const DEBUG_LOADER = true;
+
   const renderPage = () => {
-    const DEBUG_LOADER = true;
     if (DEBUG_LOADER) {
-      return <MeetingAnalysisLoader />;
+      return <MeetingLoading />;
     }
     switch (activePage) {
       case "memory":
