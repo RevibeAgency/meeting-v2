@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./memorycapture.css";
-import MeetingLoading from "../../components/MeetingLoading/MeetingLoading";
+import MeetingLoading from "../../components/MeetingLoading/MeetingAnalysisLoader";
 import TaskGrid from "../../components/TaskCard/TaskGrid";
 import API_URL from "../../lib/api";
 import { supabase } from "../../lib/supabase";
