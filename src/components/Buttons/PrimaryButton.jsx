@@ -6,6 +6,7 @@ export default function PrimaryButton({
   options = [],
   selected,
   setSelected,
+  icon,
 }) {
 
   const [open, setOpen] =
