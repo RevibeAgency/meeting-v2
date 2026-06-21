@@ -115,9 +115,9 @@
   color: #777;
 }
 
-/* .date-picker-wrap {
+.date-picker-wrap {
   position: relative;
-} */
+}
 
 .react-datepicker-wrapper{
   z-index: 9;
