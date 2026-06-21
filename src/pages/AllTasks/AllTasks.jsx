@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./alltasks.css";
 import {
   CalendarGridIcon,
@@ -17,6 +17,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("All Tasks");
   const [dateRange, setDateRange] = useState("Quick Filters");
+  const datePickerRef = useRef(null);
   const [allTasks, setAllTasks] = useState([]);
   useEffect(() => {
     const fetchTasks = async () => {
@@ -24,12 +25,12 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
         .from("tasks")
         .select("*")
         .order("created_at", { ascending: false });
-  
+
       if (!error) {
         setAllTasks(data || []);
       }
     };
-  
+
     fetchTasks();
   }, []);
   const filteredTasks = allTasks.filter((task) => {
@@ -179,7 +180,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       <div className="wrapper-central">
         <div className="search-wrapper">
           <div className="search-icon" onClick={() => setSearchQuery("")}>
-          {SearchIcon}
+            {SearchIcon}
           </div>
 
           <input
@@ -198,25 +199,30 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
 
           <div className="utility-wrap">
             {/* DATE */}
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => {
-                setSelectedDate(date);
-                setDateRange("Quick Filters");
-              }}
-              dateFormat="MMM dd, yyyy"
-              customInput={
-                <button className="date-box">
-                  <div className="icon">
-                  {CalendarGridIcon}
-                  </div>
+            <div className="date-picker-wrap">
+              <button
+                className="date-box"
+                onClick={() => datePickerRef.current?.setOpen(true)}
+              >
+                <div className="icon">{CalendarGridIcon}</div>
 
-                  <span>{(selectedDate || new Date()).toDateString()}</span>
-                </button>
-              }
-            />
+                <span>{(selectedDate || new Date()).toDateString()}</span>
+              </button>
+
+              <DatePicker
+                ref={datePickerRef}
+                selected={selectedDate}
+                onChange={(date) => {
+                  setSelectedDate(date);
+                  setDateRange("Quick Filters");
+                }}
+                dateFormat="MMM dd, yyyy"
+                popperPlacement="bottom-start"
+                className="hidden-datepicker"
+              />
+            </div>
             <PrimaryButton
-             icon={QuickFilter}
+              icon={QuickFilter}
               selected={dateRange}
               setSelected={(value) => {
                 setDateRange(value);
@@ -226,7 +232,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
             />
             {/* FILTER BUTTON */}
             <PrimaryButton
-            icon={FilterIcon}
+              icon={FilterIcon}
               selected={selectedFilter}
               setSelected={setSelectedFilter}
               options={["All Tasks", "Pending", "Completed", "Overdue"]}

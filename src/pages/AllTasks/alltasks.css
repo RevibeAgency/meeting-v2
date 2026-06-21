@@ -114,9 +114,22 @@
   justify-content: center;
   color: #777;
 }
+
+.date-picker-wrap {
+  position: relative;
+}
+
 .react-datepicker-wrapper{
   position: relative;
   z-index: 9;
+}
+
+.hidden-datepicker {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
 }
 
 .datepicker-wrapper{
