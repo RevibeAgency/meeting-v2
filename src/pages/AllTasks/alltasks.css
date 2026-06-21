@@ -125,8 +125,8 @@
 }
 
 .react-datepicker-popper{
-  position: absolute !important;
-  inset: 0 !important;
+  /* position: absolute !important;
+  inset: 0 !important; */
   z-index: 6 !important;
 }
 
