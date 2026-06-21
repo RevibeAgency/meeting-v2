@@ -217,7 +217,6 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
                   setDateRange("Quick Filters");
                 }}
                 dateFormat="MMM dd, yyyy"
-                portalId="root"
                 popperPlacement="bottom-start"
                 className="hidden-datepicker"
               />

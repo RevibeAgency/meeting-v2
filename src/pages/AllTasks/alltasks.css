@@ -120,7 +120,6 @@
 }
 
 .react-datepicker-wrapper{
-  position: relative;
   z-index: 9;
 }
 
@@ -133,14 +132,13 @@
 }
 
 .datepicker-wrapper{
-  position: relative;
   flex-shrink: 0;
 }
 
 .react-datepicker-popper{
   /* position: absolute !important;
   inset: 0 !important; */
-  z-index: 6 !important;
+  z-index: 10 !important;
 }
 
 .react-datepicker{
