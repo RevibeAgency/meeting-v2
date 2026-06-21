@@ -61,8 +61,9 @@
 }
 
 .date-box{
+  position: relative;
   height: 40px;
-  padding: 0 20px;
+  padding: 0 30px;
   border-radius: 6px;
   border: none;
   background: black;
@@ -117,29 +118,19 @@
 
 .date-picker-wrap {
   position: relative;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
 }
 
 .react-datepicker-wrapper{
-  position: relative;
+  display: flex !important;
+  position: absolute;
+  margin-top: 20px;
   z-index: 9;
 }
 
-.hidden-datepicker {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  height: 0;
-}
-
-.datepicker-wrapper{
-  position: relative;
-  flex-shrink: 0;
-}
-
 .react-datepicker-popper{
-  /* position: absolute !important;
-  inset: 0 !important; */
   z-index: 6 !important;
 }
 
