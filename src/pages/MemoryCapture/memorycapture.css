@@ -56,8 +56,8 @@
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 14px;
-  border-bottom:1px solid #B8B8B8;
+  padding: 14px;
+  border:1px solid #B8B8B8;
 }
 
 
