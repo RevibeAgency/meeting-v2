@@ -75,7 +75,7 @@
 
 .capture-textarea{
   width:100%;
-  min-height:420px;
+  height: 100%;
   resize:none;
   border:none;
   outline:none;
