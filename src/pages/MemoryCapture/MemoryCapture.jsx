@@ -1,20 +1,12 @@
 import { useState, useEffect } from "react";
 import "./memorycapture.css";
 import MeetingLoading from "../../components/MeetingLoading/MeetingAnalysisLoader";
-import TaskGrid from "../../components/TaskCard/TaskGrid";
 import API_URL from "../../lib/api";
 import { supabase } from "../../lib/supabase";
 
-function MemoryCapture({
-  meetingData,
-  setMeetingData,
-  storedTasks,
-  setStoredTasks,
-  syncTaskStatusEverywhere,
-}) {
+function MemoryCapture({ meetingData, setMeetingData, setStoredTasks }) {
   const [note, setNote] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-
 
   const handleAnalyze = async () => {
     if (!note.trim()) return;
@@ -45,7 +37,6 @@ function MemoryCapture({
 
       setStoredTasks(latestTasks || []);
 
-
       setMeetingData({
         ...data,
         tasks: latestTasks || [],
@@ -62,10 +53,14 @@ function MemoryCapture({
 
   return (
     <section id="memory-capture">
-    {isAnalyzing && <MeetingLoading />}
+      {isAnalyzing && <MeetingLoading />}
       <div className="capture-wrapper">
-        <div className="wrapper-header">
-          <span className="text-medium">Memory Capture</span>
+        <div className="capture-header">
+          <span>Capture Meeting Conversation</span>
+
+          <button className="extract-btn" onClick={handleAnalyze}>
+            Extract Action Items
+          </button>
         </div>
 
         <textarea
@@ -74,19 +69,6 @@ function MemoryCapture({
           value={note}
           onChange={(e) => setNote(e.target.value)}
         />
-
-        <div className="capture-btn-wrap">
-          <button className="analyze-btn" onClick={handleAnalyze}>
-            Analyze Meeting
-          </button>
-        </div>
-
-        <div className="capture-task-section">
-          <TaskGrid
-            tasks={storedTasks}
-            onStatusChange={syncTaskStatusEverywhere}
-          />
-        </div>
       </div>
     </section>
   );

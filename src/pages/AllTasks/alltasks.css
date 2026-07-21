@@ -134,6 +134,15 @@
   z-index: 9;
 }
 
+.hidden-datepicker {
+  outline: none !important;
+  border: none !important;
+}
+
+.react-datepicker-wrapper {
+  outline: none !important;
+}
+
 .react-datepicker-popper{
   z-index: 6 !important;
 }
