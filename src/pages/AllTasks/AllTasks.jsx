@@ -181,6 +181,33 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     return groups;
   }, {});
 
+  const handleStatusChange = async (taskId, status) => {
+    const { error } = await supabase
+      .from("tasks")
+      .update({
+        status,
+      })
+      .eq("id", taskId);
+
+    if (error) {
+      console.error(error);
+
+      return;
+    }
+
+    setAllTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+
+              status,
+            }
+          : task,
+      ),
+    );
+  };
+
   const handleDeleteTask = async (taskId) => {
     const confirmed = window.confirm("Delete this task permanently?");
 
@@ -204,7 +231,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       <KanbanBoard
         tasks={filteredTasks}
         onDelete={handleDeleteTask}
-        // onStatusChange={handleStatusChange}
+        onStatusChange={handleStatusChange}
       />
     </div>
   );

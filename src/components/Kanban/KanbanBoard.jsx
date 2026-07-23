@@ -1,67 +1,48 @@
-import "./KanbanBoard.css";
-
+import "./kanban.css";
 import KanbanColumn from "./KanbanColumn";
 
-export default function KanbanBoard({
+export default function KanbanBoard({ tasks, onDelete, onStatusChange }) {
+  const pending = tasks.filter((task) => task.status === "pending");
 
-    tasks,
+  const todo = tasks.filter((task) => task.status === "todo");
 
-    onDelete,
+  const progress = tasks.filter((task) => task.status === "progress");
 
-    onStatusChange
+  const done = tasks.filter((task) => task.status === "completed");
 
-}) {
+  return (
+    <div className="kanban-board">
+      <KanbanColumn
+        title="Pending"
+        color="#ffffff"
+        tasks={pending}
+        onDelete={onDelete}
+        onStatusChange={onStatusChange}
+      />
 
-    const pending =
-        tasks.filter(t=>t.status==="pending");
+      <KanbanColumn
+        title="To Do"
+        color="#5DA9FF"
+        tasks={todo}
+        onDelete={onDelete}
+        onStatusChange={onStatusChange}
+      />
 
-    const todo =
-        tasks.filter(t=>t.status==="todo");
+      <KanbanColumn
+        title="On Progress"
+        color="#FFB454"
+        tasks={progress}
+        onDelete={onDelete}
+        onStatusChange={onStatusChange}
+      />
 
-    const progress =
-        tasks.filter(t=>t.status==="progress");
-
-    const done =
-        tasks.filter(t=>t.status==="completed");
-
-    return (
-
-        <div className="kanban-board">
-
-            <KanbanColumn
-                title="Pending"
-                color="#EAEAEA"
-                tasks={pending}
-                onDelete={onDelete}
-                onStatusChange={onStatusChange}
-            />
-
-            <KanbanColumn
-                title="To do"
-                color="#53A5FF"
-                tasks={todo}
-                onDelete={onDelete}
-                onStatusChange={onStatusChange}
-            />
-
-            <KanbanColumn
-                title="On progress"
-                color="#F59F45"
-                tasks={progress}
-                onDelete={onDelete}
-                onStatusChange={onStatusChange}
-            />
-
-            <KanbanColumn
-                title="Done"
-                color="#65C29A"
-                tasks={done}
-                onDelete={onDelete}
-                onStatusChange={onStatusChange}
-            />
-
-        </div>
-
-    );
-
+      <KanbanColumn
+        title="Done"
+        color="#6FE3B3"
+        tasks={done}
+        onDelete={onDelete}
+        onStatusChange={onStatusChange}
+      />
+    </div>
+  );
 }
