@@ -1,0 +1,81 @@
+.kanban-column{
+
+    width:330px;
+    
+    background:#232323;
+    
+    border-radius:16px;
+    
+    padding:18px;
+    
+    display:flex;
+    
+    flex-direction:column;
+    
+    gap:18px;
+    
+    }
+    
+    .column-header{
+    
+    display:flex;
+    
+    justify-content:space-between;
+    
+    align-items:center;
+    
+    }
+    
+    .left{
+    
+    display:flex;
+    
+    align-items:center;
+    
+    gap:10px;
+    
+    }
+    
+    .dot{
+    
+    width:8px;
+    
+    height:8px;
+    
+    border-radius:50%;
+    
+    background:#4B9BFF;
+    
+    }
+    
+    .count{
+    
+    width:24px;
+    
+    height:24px;
+    
+    border-radius:8px;
+    
+    background:#2b2b2b;
+    
+    display:flex;
+    
+    align-items:center;
+    
+    justify-content:center;
+    
+    color:#8b8b8b;
+    
+    }
+    
+    .column-body{
+    
+    display:flex;
+    
+    flex-direction:column;
+    
+    gap:14px;
+    
+    min-height:600px;
+    
+    }

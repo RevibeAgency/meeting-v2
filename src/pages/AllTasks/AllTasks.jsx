@@ -6,7 +6,9 @@ import {
   SearchIcon,
   QuickFilter,
 } from "../../assets/icons/Icons";
-import TaskGrid from "../../components/TaskCard/TaskGrid";
+import Toolbar from "../../components/Kanban/Toolbar";
+import StatusTabs from "../../components/Kanban/StatusTabs";
+import KanbanBoard from "../../components/Kanban/KanbanBoard";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -97,26 +99,44 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
         taskDate.getFullYear() === today.getFullYear();
     }
 
+    // Pending
     if (selectedFilter === "Pending") {
       return (
         matchesSearch &&
         matchesDate &&
         matchesQuickFilter &&
-        task.status !== "completed"
+        task.status === "pending"
       );
     }
 
-    if (selectedFilter === "Completed") {
+    // To Do
+    if (selectedFilter === "To Do") {
+      return (
+        matchesSearch &&
+        matchesDate &&
+        matchesQuickFilter &&
+        task.status === "todo"
+      );
+    }
+
+    // On Progress
+    if (selectedFilter === "On Progress") {
+      return (
+        matchesSearch &&
+        matchesDate &&
+        matchesQuickFilter &&
+        task.status === "progress"
+      );
+    }
+
+    // Done
+    if (selectedFilter === "Done") {
       return (
         matchesSearch &&
         matchesDate &&
         matchesQuickFilter &&
         task.status === "completed"
       );
-    }
-
-    if (selectedFilter === "Overdue") {
-      return matchesSearch && matchesDate && matchesQuickFilter && isOverdue;
     }
 
     return matchesSearch && matchesDate && matchesQuickFilter;
@@ -176,98 +196,16 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     window.location.reload();
   };
   return (
-    <div className="central-taskpage">
-      <div className="wrapper-central">
-        <div className="search-wrapper">
-          <div className="search-icon" onClick={() => setSearchQuery("")}>
-            {SearchIcon}
-          </div>
+    <div className="alltasks-page">
+      <Toolbar />
 
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search all tasks..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+      <StatusTabs />
 
-        {/* TOP BAR */}
-        <div className="utility-bar">
-          {/* SEARCH */}
-          <h1 className="header">Tasks</h1>
-
-          <div className="utility-wrap">
-            {/* DATE */}
-            <div className="date-picker-wrap">
-              <button
-                className="date-box"
-                onClick={() => datePickerRef.current?.setOpen(true)}
-              >
-                <div className="icon">{CalendarGridIcon}</div>
-
-                <span>{(selectedDate || new Date()).toDateString()}</span>
-              </button>
-
-              <DatePicker
-                ref={datePickerRef}
-                selected={selectedDate}
-                onChange={(date) => {
-                  setSelectedDate(date);
-                  setDateRange("Quick Filters");
-                }}
-                dateFormat="MMM dd, yyyy"
-                className="hidden-datepicker"
-              />
-            </div>
-            <PrimaryButton
-              icon={QuickFilter}
-              selected={dateRange}
-              setSelected={(value) => {
-                setDateRange(value);
-                setSelectedDate(null);
-              }}
-              options={["Quick Filters", "Today", "This Week", "This Month"]}
-            />
-            {/* FILTER BUTTON */}
-            <PrimaryButton
-              icon={FilterIcon}
-              selected={selectedFilter}
-              setSelected={setSelectedFilter}
-              options={["All Tasks", "Pending", "Completed", "Overdue"]}
-            />
-          </div>
-        </div>
-
-        {/* TASK GRID */}
-        {/* TASK GRID */}
-        <div className="task-section">
-          {filteredTasks.length === 0 ? (
-            <div className="empty-task-state">
-              {selectedDate
-                ? "No tasks found for this date"
-                : dateRange !== "Quick Filters"
-                  ? `No tasks found for ${dateRange}`
-                  : "No tasks analyzed yet..."}
-            </div>
-          ) : (
-            <>
-              {Object.entries(groupedTasks).map(([label, taskGroup]) => (
-                <div key={label}>
-                  <div className="display-date">{label}</div>
-
-                  <TaskGrid
-                    tasks={taskGroup}
-                    onStatusChange={onStatusChange}
-                    showDelete={true}
-                    onDelete={handleDeleteTask}
-                  />
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      </div>
+      <KanbanBoard
+        tasks={filteredTasks}
+        onDelete={handleDeleteTask}
+        onStatusChange={handleStatusChange}
+      />
     </div>
   );
 }

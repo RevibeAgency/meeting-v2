@@ -18,7 +18,13 @@ export default function TaskCard({
   const handleTaskComplete = async (e) => {
     const isCompleted = e.target.checked;
 
-    const newStatus = isCompleted ? "completed" : "pending";
+    let newStatus;
+
+    if (isCompleted) {
+      newStatus = "completed";
+    } else {
+      newStatus = "pending";
+    }
 
     const { error } = await supabase
       .from("tasks")
@@ -80,7 +86,7 @@ export default function TaskCard({
             onChange={handleTaskComplete}
           />
 
-          <span className="text-small">{taskNumber}</span>
+          <span className="text-small">Mark as completed</span>
         </div>
 
         <div className="button-set">
