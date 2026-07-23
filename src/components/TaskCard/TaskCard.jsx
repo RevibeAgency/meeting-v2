@@ -12,6 +12,7 @@ export default function TaskCard({
   description,
   status,
   onStatusChange,
+  overlay = false,
   onDelete,
   showDelete = false,
 }) {
@@ -43,7 +44,11 @@ export default function TaskCard({
     }
   };
   return (
-    <div className={`task-card ${status === "completed" ? "completed" : ""}`}>
+    <div
+      className={`task-card ${status === "completed" ? "completed" : ""} ${
+        overlay ? "drag-overlay" : ""
+      }`}
+    >
       {showDelete && (
         <button className="task-delete-btn" onClick={() => onDelete(id)}>
           <svg
