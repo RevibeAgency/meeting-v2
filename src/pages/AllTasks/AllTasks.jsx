@@ -204,7 +204,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       <KanbanBoard
         tasks={filteredTasks}
         onDelete={handleDeleteTask}
-        onStatusChange={handleStatusChange}
+        // onStatusChange={handleStatusChange}
       />
     </div>
   );
