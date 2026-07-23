@@ -1,4 +1,4 @@
-import "./kanban.css";
+import "./KanbanBoard.css";
 import KanbanColumn from "./KanbanColumn";
 
 export default function KanbanBoard({ tasks, onDelete, onStatusChange }) {
