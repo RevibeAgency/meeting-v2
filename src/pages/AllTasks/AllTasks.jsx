@@ -1,16 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import "./alltasks.css";
-import {
-  CalendarGridIcon,
-  FilterIcon,
-  SearchIcon,
-  QuickFilter,
-} from "../../assets/icons/Icons";
 import Toolbar from "../../components/Kanban/Toolbar";
 import StatusTabs from "../../components/Kanban/StatusTabs";
 import KanbanBoard from "../../components/Kanban/KanbanBoard";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { supabase } from "../../lib/supabase";
 
@@ -26,7 +19,7 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
       const { data, error } = await supabase
         .from("tasks")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("position", { ascending: true });
 
       if (!error) {
         setAllTasks(data || []);
@@ -181,33 +174,174 @@ export default function AllTasks({ tasks = [], onStatusChange }) {
     return groups;
   }, {});
 
-  const handleStatusChange = async (taskId, status) => {
-    const { error } = await supabase
-      .from("tasks")
-      .update({
-        status,
-      })
-      .eq("id", taskId);
+  const handleStatusChange = async ({
+    activeId,
+    activeTask,
+    activeStatus,
+    sourceIndex,
+    targetTask,
+    targetTaskId,
+    targetIndex,
+    destinationStatus,
+    droppedOnColumn,
+    checkbox = false,
+  }) => {
+    // Backup current state
+    const previousTasks = allTasks;
 
-    if (error) {
-      console.error(error);
+    // ====================================================
+    // CHECKBOX UPDATE
+    // ====================================================
+
+    if (checkbox) {
+      // Optimistic UI
+      setAllTasks((prev) =>
+        prev.map((task) =>
+          task.id === activeId
+            ? {
+                ...task,
+                status: destinationStatus,
+              }
+            : task,
+        ),
+      );
+
+
+      // Save
+      const { error } = await supabase
+        .from("tasks")
+        .update({
+          status: destinationStatus,
+        })
+        .eq("id", activeId);
+
+      if (error) {
+        console.error(error);
+
+        setAllTasks(previousTasks);
+      }
 
       return;
     }
+    // Clone current tasks
+    const updatedTasks = [...allTasks];
 
-    setAllTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
+    // Find dragged task
+    const draggedIndex = updatedTasks.findIndex((task) => task.id === activeId);
 
-              status,
-            }
-          : task,
-      ),
+    if (draggedIndex === -1) return;
+
+    // Remove dragged task
+    const [draggedTask] = updatedTasks.splice(draggedIndex, 1);
+
+    // Update its status immediately
+    draggedTask.status = destinationStatus;
+
+    // -------------------------------------------------
+    // Determine where to insert
+    // -------------------------------------------------
+
+    let insertIndex;
+
+    // Dropped directly onto a column
+    if (droppedOnColumn) {
+      const lastTaskIndex = updatedTasks.reduce((lastIndex, task, index) => {
+        if (task.status === destinationStatus) {
+          return index;
+        }
+        return lastIndex;
+      }, -1);
+
+      insertIndex = lastTaskIndex + 1;
+    }
+
+    // Dropped onto another task
+    else {
+      insertIndex = updatedTasks.findIndex((task) => task.id === targetTaskId);
+
+      if (insertIndex === -1) {
+        insertIndex = updatedTasks.length;
+      }
+    }
+
+    // Insert dragged task
+    updatedTasks.splice(insertIndex, 0, draggedTask);
+
+    console.log(
+      updatedTasks
+        .filter((t) => t.status === destinationStatus)
+        .map((t) => ({
+          id: t.id,
+          assignee: t.assignee,
+          position: t.position,
+        })),
     );
-  };
+    // ------------------------------------
+    // Calculate new position
+    // ------------------------------------
 
+    const columnTasks = updatedTasks.filter(
+      (task) => task.status === destinationStatus,
+    );
+
+    const currentIndex = columnTasks.findIndex(
+      (task) => task.id === draggedTask.id,
+    );
+
+    const previousTask = columnTasks[currentIndex - 1];
+    const nextTask = columnTasks[currentIndex + 1];
+
+    let newPosition;
+
+    // First task in column
+    if (!previousTask && !nextTask) {
+      newPosition = 1000;
+    }
+
+    // Top of column
+    else if (!previousTask) {
+      newPosition = nextTask.position / 2;
+    }
+
+    // Bottom of column
+    else if (!nextTask) {
+      newPosition = previousTask.position + 1000;
+    }
+
+    // Between two tasks
+    else {
+      newPosition = (previousTask.position + nextTask.position) / 2;
+    }
+
+    draggedTask.position = newPosition;
+
+    // ----------------------------
+    // Optimistic UI
+    // ----------------------------
+    setAllTasks(updatedTasks);
+
+    // ----------------------------
+    // Save to Supabase
+    // ----------------------------
+    const { error } = await supabase
+      .from("tasks")
+      .update({
+        status: destinationStatus,
+        position: newPosition,
+      })
+      .eq("id", activeId);
+
+    // ----------------------------
+    // Rollback if failed
+    // ----------------------------
+    if (error) {
+      console.error(error);
+
+      setAllTasks(previousTasks);
+
+      return;
+    }
+  };
   const handleDeleteTask = async (taskId) => {
     const confirmed = window.confirm("Delete this task permanently?");
 

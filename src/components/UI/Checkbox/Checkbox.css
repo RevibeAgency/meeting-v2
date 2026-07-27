@@ -1,0 +1,109 @@
+/* ===========================
+   Cortex Checkbox
+=========================== */
+
+.cortex-checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cortex-checkbox-wrapper.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Hide native checkbox */
+
+.cortex-checkbox-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Animated Box */
+
+.cortex-checkbox {
+  width: 22px;
+  height: 22px;
+
+  border-radius: 7px;
+
+  border: 2px solid rgba(255, 255, 255, 0.25);
+
+  background: #111111;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+/* Hover */
+
+.cortex-checkbox-wrapper:hover .cortex-checkbox:not(.checked) {
+  border-color: #8e8e8e;
+}
+
+/* Checked */
+
+.cortex-checkbox.checked {
+  background: #f8046a;
+
+  border-color: #f8046a;
+
+  color: white;
+
+  box-shadow: 0 0 18px rgba(248, 4, 106, 0.28);
+}
+
+/* Focus */
+
+.cortex-checkbox-input:focus-visible + .cortex-checkbox {
+  outline: none;
+
+  box-shadow: 0 0 0 3px rgba(248, 4, 106, 0.25);
+}
+
+/* Label */
+
+.cortex-checkbox-label {
+  color: white;
+
+  font-size: 14px;
+
+  line-height: 1;
+
+  font-weight: 500;
+}
+
+/* SVG */
+
+.cortex-checkbox svg {
+  overflow: visible;
+}
+
+/* SVG Stroke */
+
+.cortex-checkbox path {
+  stroke: currentColor;
+}
+
+/* Disabled */
+
+.cortex-checkbox-wrapper.disabled .cortex-checkbox {
+  cursor: not-allowed;
+}
+
+/* Press */
+
+.cortex-checkbox:active {
+  transform: scale(0.95);
+}

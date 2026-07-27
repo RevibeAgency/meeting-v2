@@ -1,5 +1,10 @@
 import "./taskcard.css";
-import { supabase } from "../../lib/supabase";
+// import { supabase } from "../../lib/supabase";
+import { useSortable } from "@dnd-kit/sortable";
+import Checkbox from "../UI/Checkbox/Checkbox";
+import { useState } from "react";
+
+import { CSS } from "@dnd-kit/utilities";
 
 export default function TaskCard({
   id,
@@ -16,38 +21,61 @@ export default function TaskCard({
   onDelete,
   showDelete = false,
 }) {
-  const handleTaskComplete = async (e) => {
-    const isCompleted = e.target.checked;
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id,
+  });
 
-    let newStatus;
-
-    if (isCompleted) {
-      newStatus = "completed";
-    } else {
-      newStatus = "pending";
-    }
-
-    const { error } = await supabase
-      .from("tasks")
-      .update({
-        status: newStatus,
-      })
-      .eq("id", id);
-
-    if (error) {
-      console.error("Task update failed", error);
-      return;
-    }
-
-    if (onStatusChange) {
-      onStatusChange(id, newStatus);
-    }
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
   };
+
+  // const handleTaskComplete = async (e) => {
+  //   const isCompleted = e.target.checked;
+
+  //   let newStatus;
+
+  //   if (isCompleted) {
+  //     newStatus = "completed";
+  //   } else {
+  //     newStatus = "pending";
+  //   }
+
+  //   const { error } = await supabase
+  //     .from("tasks")
+  //     .update({
+  //       status: newStatus,
+  //     })
+  //     .eq("id", id);
+
+  //   if (error) {
+  //     console.error("Task update failed", error);
+  //     return;
+  //   }
+
+  //   if (onStatusChange) {
+  //     onStatusChange(id, newStatus);
+  //   }
+  // };
   return (
     <div
-      className={`task-card ${status === "completed" ? "completed" : ""} ${
-        overlay ? "drag-overlay" : ""
-      }`}
+      ref={overlay ? null : setNodeRef}
+      style={overlay ? undefined : style}
+      {...(overlay ? {} : attributes)}
+      {...(overlay ? {} : listeners)}
+      className={`
+    task-card
+    ${status === "completed" ? "completed" : ""}
+    ${overlay ? "drag-overlay" : ""}
+    ${isDragging ? "dragging" : ""}
+  `}
     >
       {showDelete && (
         <button className="task-delete-btn" onClick={() => onDelete(id)}>
@@ -83,15 +111,17 @@ export default function TaskCard({
       )}
       <div className="task-header">
         <div className="checkbox">
-          <input
-            type="checkbox"
-            id={`task-${id}`}
-            className="pointer task-checkbox"
+          <Checkbox
             checked={status === "completed"}
-            onChange={handleTaskComplete}
+            label="Mark as completed"
+            onCommit={(checked) => {
+              onStatusChange?.({
+                activeId: id,
+                destinationStatus: checked ? "completed" : "pending",
+                checkbox: true,
+              });
+            }}
           />
-
-          <span className="text-small">Mark as completed</span>
         </div>
 
         <div className="button-set">
